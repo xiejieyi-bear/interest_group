@@ -3,6 +3,8 @@ export default {
     // add
     join: '报名',
     court: '场地管理',
+    user: '用户管理',
+    activity: '活动管理',
 
     // old
     dashboard: '首页',
@@ -149,6 +151,23 @@ export default {
     actions: '操作',
     charge_history: '充值记录',
     consume_history: '消费记录'
+  },
+  user_table: {
+    id: '用户标识',
+    name: '用户名',
+    balance: '余额',
+    telphone: '电话',
+    actions: '操作',
+    charge_history: '充值记录',
+    consume_history: '消费记录'
+  },
+  activity_table: {
+    begin_time: '活动时间',
+    duration: '活动时长',
+    court_name: '活动场地',
+    charge: '总费用',
+    participate_total: '参与人数',
+    participate_users: '参加用户'
   },
   common: {
     add: '添加',

@@ -5,6 +5,8 @@ import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 
 import courtAPI from './court'
+import userAPI from './user'
+import activityAPI from './activity'
 
 // Mock.setup({
 //   timeout: '350-600'
@@ -33,5 +35,10 @@ Mock.mock(/\/court\/join/, 'get', courtAPI.getJoin)
 Mock.mock(/\/court\/all/, 'get', courtAPI.getCourtAll)
 Mock.mock(/\/court\/add/, 'post', courtAPI.addCourt)
 Mock.mock(/\/court\/del/, 'post', courtAPI.delCourt)
+
+Mock.mock(/\/user\/all/, 'get', userAPI.getAllUser)
+Mock.mock(/\/user\/add/, 'post', userAPI.addUser)
+Mock.mock(/\/user\/del/, 'post', userAPI.delUser)
+Mock.mock(/\/activity\/all/, 'get', activityAPI.getAllActivity)
 
 export default Mock

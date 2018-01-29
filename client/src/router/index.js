@@ -49,9 +49,31 @@ export const constantRouterMap = [
     redirect: 'court',
     children: [{
       path: 'court',
-      component: _import('court/index'),
+      component: _import('court/court_view'),
       name: 'court',
       meta: { title: 'court', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'user',
+    children: [{
+      path: 'user',
+      component: _import('user/user_view'),
+      name: 'user',
+      meta: { title: 'user', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'activity',
+    children: [{
+      path: 'activity',
+      component: _import('activity/activity_view'),
+      name: 'activity',
+      meta: { title: 'activity', icon: 'dashboard', noCache: true }
     }]
   },
   {
