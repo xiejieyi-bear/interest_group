@@ -44,14 +44,14 @@ export const constantRouterMap = [
     }]
   },
   {
-    path: '/dashboard',
+    path: '',
     component: Layout,
-    redirect: 'dashboard',
+    redirect: 'court',
     children: [{
-      path: 'dashboard',
-      component: _import('dashboard/index'),
-      name: 'dashboard',
-      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      path: 'court',
+      component: _import('court/index'),
+      name: 'court',
+      meta: { title: 'court', icon: 'dashboard', noCache: true }
     }]
   },
   {

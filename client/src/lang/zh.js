@@ -1,5 +1,10 @@
 export default {
   route: {
+    // add
+    join: '报名',
+    court: '场地管理',
+
+    // old
     dashboard: '首页',
     introduction: '简述',
     documentation: '文档',
@@ -133,6 +138,22 @@ export default {
   },
   join: {
     title: '报名'
+  },
+  court_table: {
+    id: '序号',
+    name: '场地名',
+    addr: '地址',
+    charge: '费用',
+    telphone: '电话',
+    is_membership: '会员',
+    actions: '操作',
+    charge_history: '充值记录',
+    consume_history: '消费记录'
+  },
+  common: {
+    add: '添加',
+    delete: '删除',
+    edit: '编辑'
   }
 
 }

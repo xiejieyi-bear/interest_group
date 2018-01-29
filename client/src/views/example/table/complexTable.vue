@@ -247,12 +247,10 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+        name: '',
+        addr: '',
+        charge: '',
+        tel: ''
       }
     },
     handleCreate() {

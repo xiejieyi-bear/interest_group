@@ -4,6 +4,8 @@ import articleAPI from './article'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 
+import courtAPI from './court'
+
 // Mock.setup({
 //   timeout: '350-600'
 // })
@@ -25,5 +27,11 @@ Mock.mock(/\/search\/user/, 'get', remoteSearchAPI.searchUser)
 
 // 账单相关
 Mock.mock(/\/transaction\/list/, 'get', transactionAPI.getList)
+
+// 场地相关
+Mock.mock(/\/court\/join/, 'get', courtAPI.getJoin)
+Mock.mock(/\/court\/all/, 'get', courtAPI.getCourtAll)
+Mock.mock(/\/court\/add/, 'post', courtAPI.addCourt)
+Mock.mock(/\/court\/del/, 'post', courtAPI.delCourt)
 
 export default Mock
