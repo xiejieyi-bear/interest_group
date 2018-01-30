@@ -31,3 +31,11 @@ export function fetchActivityList(query) {
     params: query
   })
 }
+
+export function fetchFundsList(query) {
+  return request({
+    url: '/funds/all',
+    method: 'get',
+    params: query
+  })
+}

@@ -5,6 +5,7 @@ export default {
     court: '场地管理',
     user: '用户管理',
     activity: '活动管理',
+    public_funds: '公共经费',
 
     // old
     dashboard: '首页',
@@ -157,6 +158,8 @@ export default {
     name: '用户名',
     balance: '余额',
     telphone: '电话',
+    consume_total: '消费总额',
+    charge_total: '充值总额',
     actions: '操作',
     charge_history: '充值记录',
     consume_history: '消费记录'
@@ -168,6 +171,12 @@ export default {
     charge: '总费用',
     participate_total: '参与人数',
     participate_users: '参加用户'
+  },
+  funds_table: {
+    type: '收入/支出',
+    time: '时间',
+    cause: '说明',
+    charge: '费用'
   },
   common: {
     add: '添加',

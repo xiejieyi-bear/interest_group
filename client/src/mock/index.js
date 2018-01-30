@@ -7,6 +7,7 @@ import transactionAPI from './transaction'
 import courtAPI from './court'
 import userAPI from './user'
 import activityAPI from './activity'
+import fundsAPI from './funds'
 
 // Mock.setup({
 //   timeout: '350-600'
@@ -40,5 +41,6 @@ Mock.mock(/\/user\/all/, 'get', userAPI.getAllUser)
 Mock.mock(/\/user\/add/, 'post', userAPI.addUser)
 Mock.mock(/\/user\/del/, 'post', userAPI.delUser)
 Mock.mock(/\/activity\/all/, 'get', activityAPI.getAllActivity)
+Mock.mock(/\/funds\/all/, 'get', fundsAPI.getAllFunds)
 
 export default Mock

@@ -6,7 +6,7 @@
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
-      <el-table-column align="center" :label="$t('user_table.id')" width="150px">
+      <el-table-column align="center" :label="$t('user_table.id')" width="100px">
         <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
@@ -18,19 +18,31 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" :label="$t('user_table.telphone')">
+      <el-table-column width="120px" :label="$t('user_table.telphone')">
         <template slot-scope="scope">
           <span>{{scope.row.telphone}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" :label="$t('user_table.balance')">
+      <el-table-column width="80px" :label="$t('user_table.charge_total')">
+        <template slot-scope="scope">
+          <span>{{scope.row.charge_total}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="80px" :label="$t('user_table.consume_total')">
+        <template slot-scope="scope">
+          <span>{{scope.row.consume_total}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="80px" :label="$t('user_table.balance')">
         <template slot-scope="scope">
           <span>{{scope.row.balance}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" :label="$t('user_table.actions')" min-width="350" class-name="small-padding fixed-width">
+      <el-table-column align="center" :label="$t('user_table.actions')" min-width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleDelete(scope.row)">{{$t('common.delete')}}</el-button> 
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('common.edit')}}</el-button>
@@ -41,7 +53,7 @@
     </el-table>    
 
     <el-dialog title="创建用户" :visible.sync="dialogFormVisible">
-      <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form :rules="user_rules" ref="dataForm" :model="temp" label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('user_table.id')" prop="id">
           <el-input v-model="temp.id"></el-input>
         </el-form-item>
@@ -71,8 +83,16 @@
 <script>
 import { fetchUserList, createUser, deleteUser } from '@/api/user'
 export default {
+
   name: 'userTable',
   data() {
+    const validate = (rule, value, callback) => {
+      if (value.length >= 8) {
+        callback(new Error('请输入小于8个字符'))
+      } else {
+        callback()
+      }
+    }
     return {
       tableKey: 0,
       list: null,
@@ -84,9 +104,20 @@ export default {
         name: '',
         balance: '',
         telphone: ''
+      },
+      user_rules: {
+        //  name: [
+        //    { required: true, message: '请输入活动名称', trigger: 'blur' },
+        //    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        //  ],
+        id: [{ required: true, trigger: 'change', validator: validate }],
+        name: [{ required: true, trigger: 'change', validator: validate }],
+        telphone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
+        balance: [{ trigger: 'change', validator: validate }]
       }
     }
   },
+
   created() {
     this.getList()
   },

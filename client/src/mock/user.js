@@ -3,12 +3,16 @@ var default_user_list = [{
   id: '1',
   name: 'xiejieyi',
   telphone: '62348589',
-  balance: '40'
+  balance: '40',
+  charge_total: '100',
+  consume_total: '60'
 }, {
   id: '2',
   name: 'xueweidong',
   telphone: '6234855',
-  balance: '2'
+  balance: '20',
+  charge_total: '100',
+  consume_total: '80'
 }]
 
 export default {

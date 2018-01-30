@@ -77,14 +77,14 @@ export const constantRouterMap = [
     }]
   },
   {
-    path: '/documentation',
+    path: '',
     component: Layout,
-    redirect: '/documentation/index',
+    redirect: 'public_funds',
     children: [{
-      path: 'index',
-      component: _import('documentation/index'),
-      name: 'documentation',
-      meta: { title: 'documentation', icon: 'documentation', noCache: true }
+      path: 'public_funds',
+      component: _import('public_funds/funds_view'),
+      name: 'public_funds',
+      meta: { title: 'public_funds', icon: 'documentation', noCache: true }
     }]
   }
 ]
@@ -96,26 +96,26 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/index',
-    meta: { roles: ['admin'] }, // you can set roles in root nav
-    children: [{
-      path: 'index',
-      component: _import('permission/index'),
-      name: 'permission',
-      meta: {
-        title: 'permission',
-        icon: 'lock',
-        roles: ['admin'] // or you can only set roles in sub nav
-      }
-    }]
-  }, {
-    path: '/i18n',
-    component: Layout,
-    children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
-  },
+  // {
+  //   path: '/permission',
+  //   component: Layout,
+  //   redirect: '/permission/index',
+  //   meta: { roles: ['admin'] }, // you can set roles in root nav
+  //   children: [{
+  //     path: 'index',
+  //     component: _import('permission/index'),
+  //     name: 'permission',
+  //     meta: {
+  //       title: 'permission',
+  //       icon: 'lock',
+  //       roles: ['admin'] // or you can only set roles in sub nav
+  //     }
+  //   }]
+  // }, {
+  //   path: '/i18n',
+  //   component: Layout,
+  //   children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
+  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
