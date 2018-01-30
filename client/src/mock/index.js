@@ -43,7 +43,11 @@ Mock.mock(/\/user\/add/, 'post', userAPI.addUser)
 Mock.mock(/\/user\/del/, 'post', userAPI.delUser)
 Mock.mock(/\/user\/chargehistory/, 'get', userAPI.getUserChargeHistory)
 Mock.mock(/\/user\/consumehistory/, 'get', userAPI.getUserConsumeHistory)
-Mock.mock(/\/activity\/all/, 'get', activityAPI.getAllActivity)
+
 Mock.mock(/\/funds\/all/, 'get', fundsAPI.getAllFunds)
+Mock.mock(/\/activity\/all/, 'get', activityAPI.getAllActivity)
+Mock.mock(/\/activity\/cancel/, 'post', activityAPI.cancelActivity)
+Mock.mock(/\/activity\/create/, 'post', activityAPI.createActivity)
+Mock.mock(/\/activity\/join/, 'post', activityAPI.joinActivity)
 
 export default Mock

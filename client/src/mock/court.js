@@ -50,7 +50,7 @@ export default {
     time: '2018-01-29',
     location: '苏州科技城文体中心',
     charge: 100,
-    members: ['xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'],
+    members: ['xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'].toString(),
     participate_total: 8
   }),
 

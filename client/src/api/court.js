@@ -39,3 +39,28 @@ export function getChargeHistory(query) {
     params: query
   })
 }
+
+export function cancel_activity(data) {
+  return request({
+    url: '/activity/cancel',
+    method: 'post',
+    data
+  })
+}
+
+export function create_activity(data) {
+  return request({
+    url: '/activity/create',
+    method: 'post',
+    data
+  })
+}
+
+export function join_activity(data) {
+  return request({
+    url: '/activity/join',
+    method: 'post',
+    data
+  })
+}
+

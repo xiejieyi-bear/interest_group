@@ -27,18 +27,19 @@
           <span>{{scope.row.charge}}</span>
         </template>
       </el-table-column>
-
-      <el-table-column width="150px" :label="$t('activity_table.participate_users')">
-        <template slot-scope="scope">
-          <span>{{scope.row.participate_users}}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column width="150px" :label="$t('activity_table.participate_total')">
         <template slot-scope="scope">
           <span>{{scope.row.participate_total}}</span>
         </template>
       </el-table-column>
+
+      <el-table-column min-width="150px" :label="$t('activity_table.participate_users')">
+        <template slot-scope="scope">
+          <span>{{scope.row.participate_users}}</span>
+        </template>
+      </el-table-column>
+
+      
 
      
     </el-table>  

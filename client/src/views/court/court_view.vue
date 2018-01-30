@@ -114,6 +114,13 @@ import { fetchCourtList, createCourt, deleteCourt, getChargeHistory } from '@/ap
 export default {
   name: 'complexTable',
   data() {
+    const validate = (rule, value, callback) => {
+      if (value.length >= 8) {
+        callback(new Error('请输入小于8个字符'))
+      } else {
+        callback()
+      }
+    }
     return {
       tableKey: 0,
       list: null,
@@ -128,10 +135,19 @@ export default {
         charge: '',
         telphone: ''
       },
-
       chargeTableKey: 1,
       chargeList: null,
-      dialogChargeVisible: false
+      dialogChargeVisible: false,
+      rules: {
+        //  name: [
+        //    { required: true, message: '请输入活动名称', trigger: 'blur' },
+        //    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        //  ],
+        addr: [{ required: true, trigger: 'change', validator: validate }],
+        name: [{ required: true, trigger: 'change', validator: validate }],
+        telphone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
+        charge: [{ trigger: 'change', validator: validate }]
+      }
 
     }
   },

@@ -38,42 +38,9 @@ export const constantRouterMap = [
     redirect: 'join',
     children: [{
       path: 'join',
-      component: _import('join/index'),
+      component: _import('join/join_view'),
       name: 'join',
       meta: { title: 'join', icon: 'dashboard', noCache: true }
-    }]
-  },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'court',
-    children: [{
-      path: 'court',
-      component: _import('court/court_view'),
-      name: 'court',
-      meta: { title: 'court', icon: 'dashboard', noCache: true }
-    }]
-  },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'user',
-    children: [{
-      path: 'user',
-      component: _import('user/user_view'),
-      name: 'user',
-      meta: { title: 'user', icon: 'dashboard', noCache: true }
-    }]
-  },
-  {
-    path: '',
-    component: Layout,
-    redirect: 'activity',
-    children: [{
-      path: 'activity',
-      component: _import('activity/activity_view'),
-      name: 'activity',
-      meta: { title: 'activity', icon: 'dashboard', noCache: true }
     }]
   },
   {
@@ -96,26 +63,42 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  // {
-  //   path: '/permission',
-  //   component: Layout,
-  //   redirect: '/permission/index',
-  //   meta: { roles: ['admin'] }, // you can set roles in root nav
-  //   children: [{
-  //     path: 'index',
-  //     component: _import('permission/index'),
-  //     name: 'permission',
-  //     meta: {
-  //       title: 'permission',
-  //       icon: 'lock',
-  //       roles: ['admin'] // or you can only set roles in sub nav
-  //     }
-  //   }]
-  // }, {
-  //   path: '/i18n',
-  //   component: Layout,
-  //   children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
-  // },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'court',
+    meta: { roles: ['admin'] },
+    children: [{
+      path: 'court',
+      component: _import('court/court_view'),
+      name: 'court',
+      meta: { title: 'court', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'user',
+    meta: { roles: ['admin'] },
+    children: [{
+      path: 'user',
+      component: _import('user/user_view'),
+      name: 'user',
+      meta: { title: 'user', icon: 'dashboard', noCache: true }
+    }]
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'activity',
+    meta: { roles: ['admin'] },
+    children: [{
+      path: 'activity',
+      component: _import('activity/activity_view'),
+      name: 'activity',
+      meta: { title: 'activity', icon: 'dashboard', noCache: true }
+    }]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
