@@ -4,7 +4,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('common.add')}}</el-button>
     </div>
 
-    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
+  <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
       <el-table-column align="center" :label="$t('court_table.id')" width="40">
         <template slot-scope="scope">
@@ -21,9 +21,15 @@
           <span>{{scope.row.addr}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="110px" align="center" :label="$t('court_table.charge')">
+      <el-table-column width="80px" align="center" :label="$t('court_table.charge')">
         <template slot-scope="scope">
           <span>{{scope.row.charge}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="80px" align="center" :label="$t('court_table.balance')">
+        <template slot-scope="scope">
+          <span>{{scope.row.balance}}</span>
         </template>
       </el-table-column>
       
@@ -39,8 +45,7 @@
           <el-button type="primary" size="mini" @click="handleDelete(scope.row)">{{$t('common.delete')}}</el-button>         
 
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('common.edit')}}</el-button>
-          <el-button type="primary" size="mini" style="width:100px" @click="showChargeHistory(scope.row)">{{$t('court_table.charge_history')}}</el-button>
-          <el-button type="primary" size="mini" style="width:100px" @click="showConsumeHistory(scope.row)">{{$t('court_table.consume_history')}}</el-button>
+          <el-button type="primary" size="mini" style="width:100px" @click="showChargeHistory(scope.row)">{{$t('court_table.charge_history')}}</el-button>          
         </template>
       </el-table-column>
     </el-table>    
@@ -69,11 +74,43 @@
       </div>
     </el-dialog>
 
+    <el-dialog width='800px' title="资金明细" :visible.sync="dialogChargeVisible">
+        <el-table :key='chargeTableKey' :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
+      style="width: 100%">       
+            <el-table-column width="150px" align="center" :label="$t('court_charge_table.name')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.name}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="100px" :label="$t('court_charge_table.type')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.type}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="150px" :label="$t('court_charge_table.time')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.time}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="110px" align="center" :label="$t('court_charge_table.charge')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.charge}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column min-width="150px" align="center" :label="$t('court_charge_table.desc')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.desc}}</span>
+                </template>
+            </el-table-column>      
+        </el-table>   
+    </el-dialog>   
+
   </div>
 </template>
 
 <script>
-import { fetchCourtList, createCourt, deleteCourt } from '@/api/court'
+import { fetchCourtList, createCourt, deleteCourt, getChargeHistory } from '@/api/court'
 export default {
   name: 'complexTable',
   data() {
@@ -83,13 +120,19 @@ export default {
       total: null,
       listLoading: true,
       dialogFormVisible: false,
+
       temp: {
         id: undefined,
         name: '',
         addr: '',
         charge: '',
         telphone: ''
-      }
+      },
+
+      chargeTableKey: 1,
+      chargeList: null,
+      dialogChargeVisible: false
+
     }
   },
   created() {
@@ -151,6 +194,15 @@ export default {
           type: 'success',
           duration: 2000
         })
+      })
+    },
+    showChargeHistory(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogChargeVisible = true
+      getChargeHistory(this.temp.id).then(response => {
+        this.chargeList = response.data.items
+        // this.total = response.data.total
+        this.listLoading = false
       })
     }
 

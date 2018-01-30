@@ -150,8 +150,9 @@ export default {
     telphone: '电话',
     is_membership: '会员',
     actions: '操作',
-    charge_history: '充值记录',
-    consume_history: '消费记录'
+    balance: '余额',
+    charge_history: '资金记录'
+    // consume_history: '消费记录'
   },
   user_table: {
     id: '用户标识',
@@ -164,6 +165,21 @@ export default {
     charge_history: '充值记录',
     consume_history: '消费记录'
   },
+  user_charge_table: {
+    name: '用户名',
+    time: '充值时间',
+    charge: '充值金额',
+    charge_type: '充值方式',
+    desc: '说明'
+  },
+  user_consumer_table: {
+    name: '用户名',
+    time: '活动时间',
+    location: '活动地点',
+    self_num: '携带人数',
+    participate_total: '总人数',
+    consume: '分摊金额'
+  },
   activity_table: {
     begin_time: '活动时间',
     duration: '活动时长',
@@ -171,6 +187,14 @@ export default {
     charge: '总费用',
     participate_total: '参与人数',
     participate_users: '参加用户'
+  },
+
+  court_charge_table: {
+    name: '场地名称',
+    time: '时间',
+    charge: '金额',
+    desc: '说明',
+    type: '充值/消费'
   },
   funds_table: {
     type: '收入/支出',

@@ -39,3 +39,19 @@ export function fetchFundsList(query) {
     params: query
   })
 }
+
+export function getUserChargeHistory(query) {
+  return request({
+    url: '/user/chargehistory',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getUserConsumeHistory(query) {
+  return request({
+    url: '/user/consumehistory',
+    method: 'get',
+    params: query
+  })
+}

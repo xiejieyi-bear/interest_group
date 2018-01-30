@@ -31,3 +31,11 @@ export function deleteCourt(data) {
     data
   })
 }
+
+export function getChargeHistory(query) {
+  return request({
+    url: '/court/charge',
+    method: 'get',
+    params: query
+  })
+}

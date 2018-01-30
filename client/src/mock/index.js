@@ -36,10 +36,13 @@ Mock.mock(/\/court\/join/, 'get', courtAPI.getJoin)
 Mock.mock(/\/court\/all/, 'get', courtAPI.getCourtAll)
 Mock.mock(/\/court\/add/, 'post', courtAPI.addCourt)
 Mock.mock(/\/court\/del/, 'post', courtAPI.delCourt)
+Mock.mock(/\/court\/charge/, 'get', courtAPI.getCourtChargeHistory)
 
 Mock.mock(/\/user\/all/, 'get', userAPI.getAllUser)
 Mock.mock(/\/user\/add/, 'post', userAPI.addUser)
 Mock.mock(/\/user\/del/, 'post', userAPI.delUser)
+Mock.mock(/\/user\/chargehistory/, 'get', userAPI.getUserChargeHistory)
+Mock.mock(/\/user\/consumehistory/, 'get', userAPI.getUserConsumeHistory)
 Mock.mock(/\/activity\/all/, 'get', activityAPI.getAllActivity)
 Mock.mock(/\/funds\/all/, 'get', fundsAPI.getAllFunds)
 

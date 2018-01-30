@@ -6,7 +6,8 @@ var default_court_list = [{
   addr: '星湖街',
   charge: 40,
   telphone: '62348589',
-  is_membership: true
+  is_membership: true,
+  balance: '1000'
 
 }, {
   id: '2',
@@ -14,8 +15,34 @@ var default_court_list = [{
   addr: '职业技术学院',
   charge: 45,
   telphone: 'no',
+  balance: '1000',
   is_membership: true
 }]
+
+var charge_hisotry = [
+  {
+    name: '独墅湖体育馆',
+    time: '2017-12-30',
+    charge: '1000',
+    desc: '初始充值1000元',
+    type: '充值'
+  },
+  {
+    name: '独墅湖体育馆',
+    time: '2018-01-30',
+    charge: '1000',
+    desc: '充值1000元',
+    type: '充值'
+
+  },
+  {
+    name: '独墅湖体育馆',
+    time: '2018-01-30',
+    charge: '-40',
+    desc: '场地费用40',
+    type: '消费'
+  }
+]
 
 export default {
 
@@ -51,5 +78,12 @@ export default {
     default_court_list = default_court_list.filter((court) => {
       return court.id !== item.id
     })
+  },
+
+  getCourtChargeHistory: data => {
+    console.log(data.url)
+    return {
+      items: charge_hisotry
+    }
   }
 }

@@ -77,11 +77,77 @@
       </div>
     </el-dialog>
 
+    <el-dialog width='800px' title="充值记录" :visible.sync="dialogChargeVisible">
+        <el-table :key='chargeTableKey' :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
+      style="width: 100%">       
+            <el-table-column width="150px" align="center" :label="$t('user_charge_table.name')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.name}}</span>
+                </template>
+            </el-table-column>            
+            <el-table-column width="150px" :label="$t('user_charge_table.time')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.time}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="110px" align="center" :label="$t('user_charge_table.charge')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.charge}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column min-width="150px" align="center" :label="$t('user_charge_table.desc')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.desc}}</span>
+                </template>
+            </el-table-column>      
+        </el-table>   
+    </el-dialog>
+
+    <el-dialog width='800px' title="消费记录" :visible.sync="dialogConsumeVisible">
+        <el-table :key='consumeTableKey' :data="consumeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
+      style="width: 100%">       
+            <el-table-column width="150px" align="center" :label="$t('user_consumer_table.name')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.name}}</span>
+                </template>
+            </el-table-column>            
+            <el-table-column width="150px" :label="$t('user_consumer_table.time')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.time}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="110px" align="center" :label="$t('user_consumer_table.location')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.location}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.self_num')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.self_num}}</span>
+                </template>
+            </el-table-column>
+
+            <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.participate_total')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.participate_total}}</span>
+                </template>
+            </el-table-column>   
+
+            <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.consume')">
+                <template slot-scope="scope">
+                  <span>{{scope.row.consume}}</span>
+                </template>
+            </el-table-column>         
+        </el-table>   
+    </el-dialog>  
+
   </div>
 </template>
 
 <script>
-import { fetchUserList, createUser, deleteUser } from '@/api/user'
+import { fetchUserList, createUser, deleteUser, getUserChargeHistory, getUserConsumeHistory } from '@/api/user'
 export default {
 
   name: 'userTable',
@@ -114,7 +180,16 @@ export default {
         name: [{ required: true, trigger: 'change', validator: validate }],
         telphone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
         balance: [{ trigger: 'change', validator: validate }]
-      }
+      },
+
+      chargeTableKey: 1,
+      chargeList: null,
+      dialogChargeVisible: false,
+
+      dialogConsumeVisible: false,
+      consumeTableKey: 2,
+      consumeList: null
+
     }
   },
 
@@ -177,7 +252,26 @@ export default {
           duration: 2000
         })
       })
+    },
+    showChargeHistory(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogChargeVisible = true
+      getUserChargeHistory(this.temp.id).then(response => {
+        this.chargeList = response.data.items
+        // this.total = response.data.total
+        // this.listLoading = false
+      })
+    },
+    showConsumeHistory(row) {
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogConsumeVisible = true
+      getUserConsumeHistory(this.temp.id).then(response => {
+        this.consumeList = response.data.items
+        // this.total = response.data.total
+        // this.listLoading = false
+      })
     }
+
   }
 }
 </script>

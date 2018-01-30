@@ -29,18 +29,19 @@
         </template>
       </el-table-column>
 
+      <el-table-column width="150px" :label="$t('funds_table.charge')">
+        <template slot-scope="scope">
+          <span>{{scope.row.charge}}</span>
+        </template>
+      </el-table-column>  
 
-      <el-table-column width="150px" :label="$t('funds_table.cause')">
+      <el-table-column min-width="150px" :label="$t('funds_table.cause')">
         <template slot-scope="scope">
           <span>{{scope.row.cause}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="150px" :label="$t('funds_table.charge')">
-        <template slot-scope="scope">
-          <span>{{scope.row.charge}}</span>
-        </template>
-      </el-table-column>     
+         
     </el-table>  
 
   </div>
