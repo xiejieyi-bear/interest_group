@@ -1,9 +1,6 @@
 package com.interest.auth.daobean;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
@@ -13,6 +10,7 @@ public class User {
     private String username;
     private String salt;
     private String encrypt;
+    @Column(unique=true)
     private String usermark="";
     private String telephone="";
     private String email="";
