@@ -22,3 +22,9 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+## mvn
+
+.mvn/*
+mvnw
+mvnw.cmd

@@ -1,7 +1,6 @@
 package com.interest.auth.dao;
 
 import com.interest.auth.daobean.User;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
