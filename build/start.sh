@@ -2,7 +2,7 @@
 # 运行时
 # 创建mysql
 
-docker pull mysql:5.6
+#docker pull mysql:5.6
 
 # MYSQL_ROOT_PASSWORD 指定 root密码
 docker run -p 3306:3306 --name mymysql -v $PWD/data:/var/lib/mysql \

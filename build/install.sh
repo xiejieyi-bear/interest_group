@@ -10,7 +10,7 @@ fi
 
 # 检查docker是否已安装
 docker_version=`docker -v | grep version`
-if [ -z "$STRING" ]; then 
+if [ -z "$docker_version" ]; then 
     # 准备docker环境（暂时在线安装）离线安装未实施
     apt-get update
 
@@ -31,16 +31,15 @@ if [ -z "$STRING" ]; then
        stable"
 
     apt-get update
-    apt-get install docker-ce
+    apt-get install docker-ce=1.13.1
 fi
 
 # 创建用户名和密码，并加入docker组
-groupadd docker
 useradd hobby_user -d /home/hobby_user -p "Admin123"
-sudo usermod -aG docker hobby_user
+usermod -aG docker hobby_user
 
 cp -rf ./nginx /home/hobby_user/
 mkdir /home/hobby_user/mysql
 mkdir -p /home/hobby_user/mysql/logs /home/hobby_user/mysql/data
-cp -rf ./bin/start.sh /home/hobby_user/start.sh
+cp -rf ./build/start.sh /home/hobby_user/start.sh
 
