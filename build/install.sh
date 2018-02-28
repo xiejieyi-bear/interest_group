@@ -31,7 +31,7 @@ if [ -z "$STRING" ]; then
        stable"
 
     apt-get update
-    apt-get install docker-ce=1.13.1
+    apt-get install docker-ce
 fi
 
 # 创建用户名和密码，并加入docker组
