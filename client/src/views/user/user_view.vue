@@ -6,21 +6,21 @@
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
-      <el-table-column align="center" :label="$t('user_table.id')" width="100px">
+      <el-table-column align="center" :label="$t('user_table.usermark')" width="100px">
         <template slot-scope="scope">
-          <span>{{scope.row.id}}</span>
+          <span>{{scope.row.usermark}}</span>
         </template>
       </el-table-column>  
       
-      <el-table-column width="150px" align="center" :label="$t('user_table.name')">
+      <el-table-column width="150px" align="center" :label="$t('user_table.username')">
         <template slot-scope="scope">
-          <span>{{scope.row.name}}</span>
+          <span>{{scope.row.username}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" :label="$t('user_table.telphone')">
+      <el-table-column width="120px" :label="$t('user_table.telephone')">
         <template slot-scope="scope">
-          <span>{{scope.row.telphone}}</span>
+          <span>{{scope.row.telephone}}</span>
         </template>
       </el-table-column>
 
@@ -60,16 +60,20 @@
 
     <el-dialog title="创建用户" :visible.sync="dialogFormVisible">
       <el-form :rules="user_rules" ref="dataForm" :model="temp" label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
-        <el-form-item :label="$t('user_table.id')" prop="id">
-          <el-input v-model="temp.id"></el-input>
+        <el-form-item :label="$t('user_table.usermark')" prop="usermark">
+          <el-input v-model="temp.usermark"></el-input>
         </el-form-item>
 
-        <el-form-item :label="$t('user_table.name')" prop="name">
-          <el-input v-model="temp.name"></el-input>
+        <el-form-item :label="$t('user_table.username')" prop="username">
+          <el-input v-model="temp.username"></el-input>
         </el-form-item>
 
-        <el-form-item :label="$t('user_table.telphone')" prop="telphone">
-          <el-input v-model="temp.telphone"></el-input>
+        <el-form-item :label="$t('user_table.password')" prop="password">
+          <el-input v-model="temp.password" type="password" ></el-input>
+        </el-form-item>
+
+        <el-form-item :label="$t('user_table.telephone')" prop="telephone">
+          <el-input v-model="temp.telephone"></el-input>
         </el-form-item>
 
         <el-form-item :label="$t('user_table.balance')" prop="balance">
@@ -86,9 +90,9 @@
     <el-dialog width='800px' title="充值记录" :visible.sync="dialogChargeVisible">
         <el-table :key='chargeTableKey' :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">       
-            <el-table-column width="150px" align="center" :label="$t('user_charge_table.name')">
+            <el-table-column width="150px" align="center" :label="$t('user_charge_table.username')">
                 <template slot-scope="scope">
-                  <span>{{scope.row.name}}</span>
+                  <span>{{scope.row.username}}</span>
                 </template>
             </el-table-column>            
             <el-table-column width="150px" :label="$t('user_charge_table.time')">
@@ -113,9 +117,9 @@
     <el-dialog width='800px' title="消费记录" :visible.sync="dialogConsumeVisible">
         <el-table :key='consumeTableKey' :data="consumeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">       
-            <el-table-column width="150px" align="center" :label="$t('user_consumer_table.name')">
+            <el-table-column width="150px" align="center" :label="$t('user_consumer_table.username')">
                 <template slot-scope="scope">
-                  <span>{{scope.row.name}}</span>
+                  <span>{{scope.row.username}}</span>
                 </template>
             </el-table-column>            
             <el-table-column width="150px" :label="$t('user_consumer_table.time')">
@@ -159,7 +163,7 @@ export default {
   name: 'userTable',
   data() {
     const validate = (rule, value, callback) => {
-      if (value.length >= 8) {
+      if (value.length >= 20) {
         callback(new Error('请输入小于8个字符'))
       } else {
         callback()
@@ -172,19 +176,19 @@ export default {
       listLoading: true,
       dialogFormVisible: false,
       temp: {
-        id: undefined,
-        name: '',
+        usermark: undefined,
+        username: '',
         balance: '',
-        telphone: ''
+        telephone: ''
       },
       user_rules: {
         //  name: [
         //    { required: true, message: '请输入活动名称', trigger: 'blur' },
         //    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         //  ],
-        id: [{ required: true, trigger: 'change', validator: validate }],
-        name: [{ required: true, trigger: 'change', validator: validate }],
-        telphone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
+        usermark: [{ required: true, trigger: 'change', validator: validate }],
+        username: [{ required: true, trigger: 'change', validator: validate }],
+        telephone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
         balance: [{ trigger: 'change', validator: validate }]
       },
 
@@ -206,7 +210,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchUserList(this.listQuery).then(response => {
-        this.list = response.data.items
+        this.list = response.data.data
         // this.total = response.data.total
         this.listLoading = false
       })
@@ -214,10 +218,10 @@ export default {
 
     resetTemp() {
       this.temp = {
-        id: undefined,
-        name: '',
+        usermark: undefined,
+        username: '',
         balance: '',
-        telphone: ''
+        telephone: ''
       }
     },
 
@@ -232,7 +236,7 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          // this.temp.usermark = parseInt(Math.random() * 100) + 1024 // mock a usermark
           // this.temp.author = 'vue-element-admin'
           createUser(this.temp).then(() => {
             this.getList()
@@ -249,7 +253,7 @@ export default {
     },
     handleDelete(row) {
       this.temp = Object.assign({}, row) // copy obj
-      deleteUser(this.temp).then(() => {
+      deleteUser(this.temp.usermark).then(() => {
         this.getList()
         this.$notify({
           title: '成功',
@@ -262,7 +266,7 @@ export default {
     showChargeHistory(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogChargeVisible = true
-      getUserChargeHistory(this.temp.id).then(response => {
+      getUserChargeHistory(this.temp.usermark).then(response => {
         this.chargeList = response.data.items
         // this.total = response.data.total
         // this.listLoading = false
@@ -271,7 +275,7 @@ export default {
     showConsumeHistory(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogConsumeVisible = true
-      getUserConsumeHistory(this.temp.id).then(response => {
+      getUserConsumeHistory(this.temp.usermark).then(response => {
         this.consumeList = response.data.items
         // this.total = response.data.total
         // this.listLoading = false

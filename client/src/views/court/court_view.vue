@@ -33,9 +33,9 @@
         </template>
       </el-table-column>
       
-      <el-table-column width="150px" align="center" :label="$t('court_table.telphone')">
+      <el-table-column width="150px" align="center" :label="$t('court_table.telephone')">
         <template slot-scope="scope">
-          <span>{{scope.row.telphone}}</span>
+          <span>{{scope.row.telephone}}</span>
         </template>
       </el-table-column>
     
@@ -64,8 +64,8 @@
           <el-input v-model="temp.charge"></el-input>
         </el-form-item>
 
-        <el-form-item :label="$t('court_table.telphone')" prop="telphone">
-          <el-input v-model="temp.telphone"></el-input>
+        <el-form-item :label="$t('court_table.telephone')" prop="telephone">
+          <el-input v-model="temp.telephone"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -133,7 +133,7 @@ export default {
         name: '',
         addr: '',
         charge: '',
-        telphone: ''
+        telephone: ''
       },
       chargeTableKey: 1,
       chargeList: null,
@@ -145,7 +145,7 @@ export default {
         //  ],
         addr: [{ required: true, trigger: 'change', validator: validate }],
         name: [{ required: true, trigger: 'change', validator: validate }],
-        telphone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
+        telephone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
         charge: [{ trigger: 'change', validator: validate }]
       }
 
@@ -170,7 +170,7 @@ export default {
         name: '',
         addr: '',
         charge: '',
-        telphone: ''
+        telephone: ''
       }
     },
 

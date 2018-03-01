@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchUserList(query) {
   return request({
-    url: '/user/all',
+    url: '/user',
     method: 'get',
     params: query
   })
@@ -10,17 +10,16 @@ export function fetchUserList(query) {
 
 export function createUser(data) {
   return request({
-    url: '/user/add',
+    url: '/user',
     method: 'post',
     data
   })
 }
 
-export function deleteUser(data) {
+export function deleteUser(usermark) {
   return request({
-    url: '/user/del',
-    method: 'post',
-    data
+    url: '/user/' + usermark,
+    method: 'delete'
   })
 }
 

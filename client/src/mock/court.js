@@ -5,7 +5,7 @@ var default_court_list = [{
   name: '独墅湖体育馆',
   addr: '星湖街',
   charge: 40,
-  telphone: '62348589',
+  telephone: '62348589',
   is_membership: true,
   balance: '1000'
 
@@ -14,7 +14,7 @@ var default_court_list = [{
   name: '九帮体育馆',
   addr: '职业技术学院',
   charge: 45,
-  telphone: 'no',
+  telephone: 'no',
   balance: '1000',
   is_membership: true
 }]

@@ -11,11 +11,11 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const env = require('../config/'+process.env.env_config+'.env')
+const env = require('../config/' + process.env.env_config + '.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -25,6 +25,8 @@ const webpackConfig = merge(baseWebpackConfig, {
       usePostCSS: true
     })
   },
+
+  // 控制sourcemap压缩方式，
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
@@ -33,31 +35,39 @@ const webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
+
+    // webpack 插件列表。例如，当多个 bundle 共享一些相同的依赖，
+    // CommonsChunkPlugin 有助于提取这些依赖到共享的 bundle 中，来避免重复打包。
+
+    // https://doc.webpack-china.org/plugins/define-plugin/
+
+    // 允许创建一个在编译时可以配置的全局常量
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
-    }),
+    // new UglifyJsPlugin({
+    //   uglifyOptions: {
+    //     compress: {
+    //       warnings: false
+    //     }
+    //   },
+    //   // 是否需要sourcemap
+    //   sourceMap: config.build.productionSourceMap,
+    //   parallel: true
+    // }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
       // Setting the following option to `false` will not extract CSS from codesplit chunks.
       // Their CSS will instead be inserted dynamically with style-loader when the codesplit chunk has been loaded by webpack.
       // increasing file size: https://github.com/vuejs-templates/webpack/issues/1110
-      allChunks: false,
+      allChunks: false
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
       cssProcessorOptions: config.build.productionSourceMap
-        ? { safe: true, map: { inline: false } }
+        ? { safe: true, map: { inline: false }}
         : { safe: true }
     }),
     // generate dist index.html with correct asset hash for caching.
@@ -87,7 +97,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks (module) {
+      minChunks(module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
@@ -98,10 +108,13 @@ const webpackConfig = merge(baseWebpackConfig, {
         )
       }
     }),
+    // 将多个chunk合并陈搞一个chunk
+
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
+      // 传入 `Infinity` 会马上生成 公共chunk，但里面没有模块。
       minChunks: Infinity
     }),
     // This instance extracts shared chunks from code splitted chunks and bundles them
@@ -109,32 +122,36 @@ const webpackConfig = merge(baseWebpackConfig, {
     // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
     new webpack.optimize.CommonsChunkPlugin({
       name: 'app',
+
+      // async这个属性，不太理解
       async: 'vendor-async',
       children: true,
+
+      // 在传入  公共chunk(commons chunk) 之前所需要包含的最少数量的 chunks
       minChunks: 3
     }),
     // split echarts into its own file
     new webpack.optimize.CommonsChunkPlugin({
       async: 'echarts',
       minChunks(module) {
-        var context = module.context;
-        return context && (context.indexOf('echarts') >= 0 || context.indexOf('zrender') >= 0);
+        var context = module.context
+        return context && (context.indexOf('echarts') >= 0 || context.indexOf('zrender') >= 0)
       }
     }),
     // split xlsx into its own file
     new webpack.optimize.CommonsChunkPlugin({
       async: 'xlsx',
       minChunks(module) {
-        var context = module.context;
-        return context && (context.indexOf('xlsx') >= 0);
+        var context = module.context
+        return context && (context.indexOf('xlsx') >= 0)
       }
     }),
-     // split codemirror into its own file
-     new webpack.optimize.CommonsChunkPlugin({
+    // split codemirror into its own file
+    new webpack.optimize.CommonsChunkPlugin({
       async: 'codemirror',
       minChunks(module) {
-        var context = module.context;
-        return context && (context.indexOf('codemirror') >= 0);
+        var context = module.context
+        return context && (context.indexOf('codemirror') >= 0)
       }
     }),
 

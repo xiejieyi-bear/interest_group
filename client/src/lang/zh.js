@@ -147,7 +147,7 @@ export default {
     name: '场地名',
     addr: '地址',
     charge: '费用',
-    telphone: '电话',
+    telephone: '电话',
     is_membership: '会员',
     actions: '操作',
     balance: '余额',
@@ -155,10 +155,11 @@ export default {
     // consume_history: '消费记录'
   },
   user_table: {
-    id: '用户标识',
-    name: '用户名',
+    usermark: '用户标识',
+    username: '用户名',
     balance: '余额',
-    telphone: '电话',
+    telephone: '电话',
+    password: '密码',
     consume_total: '消费总额',
     charge_total: '充值总额',
     actions: '操作',

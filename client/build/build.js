@@ -10,9 +10,11 @@ const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
 const server = require('pushstate-server')
 
-var spinner = ora('building for '+ process.env.env_config+ ' environment...' )
+// 显示过程记录
+var spinner = ora('building for ' + process.env.env_config + ' environment...')
 spinner.start()
 
+// rm，删除dist/static文件夹
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
   webpack(webpackConfig, (err, stats) => {
@@ -36,13 +38,13 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Tip: built files are meant to be served over an HTTP server.\n' +
       '  Opening index.html over file:// won\'t work.\n'
     ))
-    if(process.env.npm_config_preview){
+    if (process.env.npm_config_preview) {
       server.start({
-          port: 9526,
-          directory: './dist',
-          file: '/index.html'
-      });
-      console.log('> Listening at ' +  'http://localhost:9526' + '\n')
+        port: 9526,
+        directory: './dist',
+        file: '/index.html'
+      })
+      console.log('> Listening at ' + 'http://localhost:9526' + '\n')
     }
   })
 })
