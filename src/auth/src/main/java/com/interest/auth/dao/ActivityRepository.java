@@ -11,5 +11,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ActivityRepository extends CrudRepository<Activity, Long>
 {
-
+    //根据状态查找活动
+    Iterable<Activity> findAllByState(Integer activityState);
 }

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function fetchCourtJoinData(query) {
   return request({
-    url: '/court/join',
+    url: '/activity/join',
     method: 'get',
     params: query
   })
@@ -56,7 +56,7 @@ export function create_activity(data) {
   })
 }
 
-export function join_activity(data) {
+export function JoinActivityAPI(data) {
   return request({
     url: '/activity/join',
     method: 'post',

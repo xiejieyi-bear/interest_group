@@ -16,8 +16,43 @@ public class Activity
     private Integer duration;
     private Long courtID;
     private String courtName;
+    private Integer courtNums;
+    private String participateNicknames;
+
+    public Integer getCourtNums()
+    {
+        return courtNums;
+    }
+
+    public void setCourtNums(Integer courtNums)
+    {
+        this.courtNums = courtNums;
+    }
+
+    public String getParticipateNicknames()
+    {
+        return participateNicknames;
+    }
+
+    public void setParticipateNicknames(String participateNicknames)
+    {
+        this.participateNicknames = participateNicknames;
+    }
+
     private String participateUsers;
     private Integer chargeTotal;
+    //活动状态：0 ：报名中 1：已结束
+    private Integer state;
+
+    public Integer getState()
+    {
+        return state;
+    }
+
+    public void setState(Integer state)
+    {
+        this.state = state;
+    }
 
     public Long getId()
     {
@@ -87,5 +122,20 @@ public class Activity
     public void setChargeTotal(Integer chargeTotal)
     {
         this.chargeTotal = chargeTotal;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Activity{" +
+                "id=" + id +
+                ", beginTime=" + beginTime +
+                ", duration=" + duration +
+                ", courtID=" + courtID +
+                ", courtName='" + courtName + '\'' +
+                ", participateUsers='" + participateUsers + '\'' +
+                ", chargeTotal=" + chargeTotal +
+                ", state=" + state +
+                '}';
     }
 }

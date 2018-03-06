@@ -63,7 +63,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '1111111'
+        password: 'admin123'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -87,6 +87,12 @@ export default {
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
+
+            const roles = ['admin']
+            this.$store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+              this.$router.addRoutes(this.$store.getters.addRouters) // 动态添加可访问路由表
+            })
+
             this.$router.push({ path: '/' })
           }).catch(() => {
             this.loading = false

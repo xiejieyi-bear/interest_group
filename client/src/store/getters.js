@@ -14,6 +14,7 @@ const getters = {
   addRouters: state => state.permission.addRouters,
   errorLogs: state => state.errorLog.logs,
   // 场地报名信息
-  join_court: state => state.court
+  join_court: state => state.court,
+  username: state => state.user.username
 }
 export default getters

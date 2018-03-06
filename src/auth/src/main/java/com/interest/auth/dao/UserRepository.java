@@ -13,15 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface UserRepository extends CrudRepository<User, Long>
 {
-    String findUsernameByUsermark="SELECT username FROM user where user.usermark= :usermark";
+    //String findUsernameByUsermark="SELECT username FROM user where user.usermark= :usermark";
     /**
      *  根据用户名找用户信息
      */
     User findByUsername(String username);
 
     @Transactional
-    Integer deleteByUsermark(String usermark);
+    Integer deleteByUsername(String username);
 
-    @Query(value = findUsernameByUsermark, nativeQuery = true)
-    String getUsernameByUsermark(@Param("usermark") String usermark);
+    //@Query(value = findUsernameByUsermark, nativeQuery = true)
+    //String getUsernameByUsermark(@Param("usermark") String usermark);
 }

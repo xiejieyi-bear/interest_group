@@ -7,11 +7,13 @@ public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
+
+    @Column(unique=true)
     private String username;
     private String salt;
     private String encrypt;
-    @Column(unique=true)
-    private String usermark="";
+
+    private String nickname="";
     private String telephone="";
     private String email="";
     private Integer role=1;
@@ -23,11 +25,11 @@ public class User {
     {
     }
 
-    public User(String salt, String encrypt, String usermark)
+    public User(String salt, String encrypt, String username)
     {
         this.salt = salt;
         this.encrypt = encrypt;
-        this.usermark = usermark;
+        this.username = username;
     }
 
     public Long getId()
@@ -70,14 +72,14 @@ public class User {
         this.encrypt = encrypt;
     }
 
-    public String getUsermark()
+    public String getNickname()
     {
-        return usermark;
+        return nickname;
     }
 
-    public void setUsermark(String usermark)
+    public void setNickname(String nickname)
     {
-        this.usermark = usermark;
+        this.nickname = nickname;
     }
 
     public String getTelephone()
@@ -118,7 +120,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", salt='" + salt + '\'' +
                 ", encrypt='" + encrypt + '\'' +
-                ", usermark='" + usermark + '\'' +
+                ", nickname='" + nickname + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +

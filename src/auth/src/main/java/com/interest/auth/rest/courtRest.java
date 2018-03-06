@@ -22,10 +22,12 @@ import java.util.function.Consumer;
  * @author
  */
 @RestController
-public class courtRest
+public class CourtRest
 {
     @Autowired
     private CourtRepository courtRepository;
+
+
 
     @RequestMapping(value = "/court",method = RequestMethod.POST )
     public boolean addCourt(@RequestBody Map<String, String> payload)

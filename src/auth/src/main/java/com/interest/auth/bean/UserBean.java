@@ -7,9 +7,10 @@ package com.interest.auth.bean;
  */
 public class UserBean
 {
+    //用户名，唯一标识
     private String username;
     private String password;
-    private String usermark;
+    private String nickname;
     private String telephone;
     private String email;
 
@@ -33,14 +34,14 @@ public class UserBean
         this.password = password;
     }
 
-    public String getUsermark()
+    public String getNickname()
     {
-        return usermark;
+        return nickname;
     }
 
-    public void setUsermark(String usermark)
+    public void setNickname(String nickname)
     {
-        this.usermark = usermark;
+        this.nickname = nickname;
     }
 
     public String getTelephone()

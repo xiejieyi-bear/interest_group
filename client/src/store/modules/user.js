@@ -1,4 +1,5 @@
 import { loginByUsername, logout, getUserInfo } from '@/api/login'
+import { JoinActivityAPI } from '@/api/court'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const user = {
@@ -11,6 +12,7 @@ const user = {
     avatar: '',
     introduction: '',
     roles: [],
+    username: '',
     setting: {
       articlePlatform: []
     }
@@ -40,10 +42,27 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_USER_INFO: (state, user) => {
+      state.roles = [user.roles]
+      state.username = user.username
+      state.name = user.nickname
     }
   },
 
   actions: {
+    JoinActivity({ commit, state }, joinInfo) {
+      const param = { ...joinInfo, 'username': state.username }
+
+      return new Promise((resolve, reject) => {
+        JoinActivityAPI(param).then(response => {
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
     // 用户名登录
     LoginByUsername({ commit }, userInfo) {
       const username = userInfo.username.trim()
@@ -51,6 +70,7 @@ const user = {
         loginByUsername(username, userInfo.password).then(response => {
           const data = response.data
           commit('SET_TOKEN', data.token)
+          // commit('SET_USER_INFO', data.data)
           // setToken(response.data.token)
           setToken('token_key')
           resolve()
@@ -67,11 +87,12 @@ const user = {
           if (!response.data) { // 由于mockjs 不支持自定义状态码只能这样hack
             reject('error')
           }
-          const data = response.data
-          commit('SET_ROLES', data.roles)
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_INTRODUCTION', data.introduction)
+          const data = response.data.data
+          // commit('SET_ROLES', data.roles)
+          commit('SET_USER_INFO', data)
+          // commit('SET_NAME', data.name)
+          // commit('SET_AVATAR', data.avatar)
+          // commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
         }).catch(error => {
           reject(error)

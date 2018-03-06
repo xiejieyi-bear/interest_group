@@ -30,10 +30,10 @@ public class InitApplicationRunner implements ApplicationRunner
         String encryptPWD = "53ca639632d193a8e92d569042e812bdc2804e9b9a175668";
         User user = new User();
         user.setUsername(username);
-        user.setUsermark("admin");
+        user.setNickname("admin");
         user.setSalt(salt);
         user.setEncrypt(encryptPWD);
-        user.setRole(Constant.ROLE_TYPE.ADMIN.ordinal());
+        user.setRole(Constant.ROLE_TYPE_ADMIN);
         try{
             userRepository.save(user);
             System.out.println("init admin user success!" + user);

@@ -23,6 +23,7 @@ public class MyConfiguration {
                 registry.addMapping("/**").allowedOrigins("*")
                         .allowedMethods("*").allowedHeaders("*")
                         .allowCredentials(true);
+                registry.addMapping("**/*");
             }
         };
     }

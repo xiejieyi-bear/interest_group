@@ -3,26 +3,30 @@
   <div class="join-container">
     <el-form class="join-form" autoComplete="off" :model="joinForm"  ref="joinForm" label-position="left" label-width="80px">
       <div class="title-container">
-        <h3 class="title">{{$t('join.title')}}</h3>
-      </div>   
+        <h3 v-show="!isRegistry" class="title">{{$t('join.title')}}</h3>
+      </div>
 
-      <el-form-item  label="时间:" >   
-        <el-input name="time" type="text" v-model="joinForm.time" v-bind:readonly="true" />
+      <div class="text">
+        <h3 v-show="isRegistry" >您已报名</h3>
+      </div>
+
+      <el-form-item  label="时间:" >
+        <el-input name="beginTime" type="text" v-model="joinForm.beginTime" v-bind:readonly="true" />
       </el-form-item>
 
-      <el-form-item  label="场地:" >   
-        <el-input name="court" type="text" v-model="joinForm.location" v-bind:readonly="true" />
+      <el-form-item  label="场地:" >
+        <el-input name="court" type="text" v-model="joinForm.courtName" v-bind:readonly="true" />
       </el-form-item>
 
-      <el-form-item  :label="participate_total_label" >   
-        <el-input name="join_members" type="textarea" v-bind:autosize="true" v-model="joinForm.members" v-bind:readonly="true" />
+      <el-form-item  :label="participate_total_label" >
+        <el-input name="join_members" type="textarea" v-bind:autosize="true" v-model="joinForm.participateUsers" v-bind:readonly="true" />
       </el-form-item>
 
-      <el-form-item  label="费用:" >   
-        <el-input name="charge" type="text" v-model="joinForm.charge" v-bind:readonly="true" />
+      <el-form-item  label="费用:" >
+        <el-input name="chargeTotal" type="text" v-model="joinForm.chargeTotal" v-bind:readonly="true" />
       </el-form-item>
-      
-      <el-form-item  label="人均费用:" >   
+
+      <el-form-item  label="人均费用:" >
         <el-input name="average_charge" type="text" v-model="average_charge" v-bind:readonly="true" />
       </el-form-item>
 
@@ -31,17 +35,17 @@
       </el-form-item>
 
       <el-form-item>
-        <el-button  type="primary" @click="submitForm()">立即报名
+        <el-button  v-show="!isRegistry" type="primary" @click="submitForm()">立即报名
         </el-button>
 
-        <el-button  @click="cancelForm()">取消报名
+        <el-button  v-show="isRegistry" @click="unRegistry()">取消报名
         </el-button>
 
         <el-button type="success" round  @click="showActivity()">创建活动
         </el-button>
 
       </el-form-item>
-    </el-form>    
+    </el-form>
   </div>
 
   <el-dialog title="创建活动" :visible.sync="dialogFormVisible">
@@ -56,7 +60,7 @@
                 <el-option v-for="item in  activity_times_options" :key="item.key" :label="item.display_name" :value="item.key">
                 </el-option>
             </el-select>
-          
+
         </el-form-item>
 
         <el-form-item :label="$t('activity_table.court_name')" prop="court_name">
@@ -66,12 +70,12 @@
             </el-select>
         </el-form-item>
 
-        <el-form-item :label="$t('activity_table.charge')" prop="charge">
-          <el-input v-model="temp.charge"></el-input>
+        <el-form-item :label="$t('activity_table.chargeTotal')" prop="chargeTotal">
+          <el-input v-model="temp.chargeTotal"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
+        <el-button   @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
         <el-button type="primary" @click="createActivity">{{$t('table.confirm')}}</el-button>
       </div>
     </el-dialog>
@@ -79,18 +83,22 @@
 </template>
 
 <script>
-import { fetchCourtJoinData, join_activity, cancel_activity, create_activity } from '@/api/court'
+import { fetchCourtJoinData, cancel_activity, create_activity } from '@/api/court'
+
+import { formatDateYYMMDDHHMM } from '@/utils/common'
 
 export default {
   name: 'join',
   data() {
     return {
       join_nums: 1,
+      isRegistry:false,
       joinForm: {
-        time: '2018-01-27',
-        location: '苏州独墅湖体育馆',
-        charge: '80RMB',
-        members: ['xiejieyi*2', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili', 'xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'].toString(),
+        id: '',
+        beginTime: '2018-01-27',
+        courtName: '苏州独墅湖体育馆',
+        chargeTotal: '80RMB',
+        participateUsers: ['xiejieyi*2', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili', 'xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'].toString(),
         participate_total: 0
       },
       dialogFormVisible: false,
@@ -109,17 +117,19 @@ export default {
         begin_time: undefined,
         duration: 0,
         court_name: undefined,
-        charge: 0
+        chargeTotal: 0
       }
 
     }
   },
   methods: {
     submitForm() {
-      join_activity().then(response => {
-        console.log(response.data)
-        alert('submit success')
-        // this.joinForm = response.data
+      let params = {
+        'activity_id': this.joinForm.id,
+        'nums': this.join_nums
+      }
+      this.$store.dispatch('JoinActivity', params).then(() => {
+        alert('报名成功')
       }).catch(err => {
         console.log(err)
       })
@@ -127,12 +137,44 @@ export default {
     fetchJoinData() {
       fetchCourtJoinData().then(response => {
         console.log(response.data)
-        this.joinForm = response.data
+        if (response.data && response.data.data) {
+
+          let username = this.$store.getters.username
+          this.joinForm = response.data.data
+          let beginTime = this.joinForm.beginTime
+          let endTime = this.joinForm.beginTime + this.joinForm.duration * 60 * 1000
+
+          this.joinForm.beginTime = formatDateYYMMDDHHMM(new Date(beginTime))
+          this.joinForm.endTime = formatDateYYMMDDHHMM(new Date(endTime))
+
+          this.joinForm.beginTime = this.joinForm.beginTime + ' ~ ' + this.joinForm.endTime
+          // 计算人数
+          let participates = response.data.data.participateUsers
+          // this.joinForm.members = participates
+          let participates_len = 0
+          if (participates) {
+            let subStrs = participates.split(',')
+            let usernames = []
+            subStrs.forEach(function(subStr,index){
+              let subStrStar = subStr.split('*')
+              usernames.push(subStrStar[0])
+              if (subStrStar.length === 1) {
+                participates_len++
+              }else {
+                participates_len = participates_len + parseInt(subStrStar[1])
+              }
+            });
+            if(usernames.includes(username)){
+              this.isRegistry = true
+            }
+          }
+          this.joinForm.participate_total = participates_len
+        }
       }).catch(err => {
         console.log(err)
       })
     },
-    cancelForm() {
+    unRegistry() {
       cancel_activity().then(response => {
         console.log(response.data)
         alert('submit success')
@@ -167,7 +209,10 @@ export default {
     // 计算属性的 getter
     average_charge: function() {
       // `this` 指向 vm 实例
-      return (this.joinForm.charge / this.joinForm.members.length).toFixed(2)
+      if (this.joinForm.participate_total === 0) {
+        return 0
+      }
+      return (this.joinForm.chargeTotal / this.joinForm.participate_total).toFixed(2)
     },
     participate_total_label: function() {
       return '已报名(' + this.joinForm.participate_total + ')'
@@ -213,6 +258,15 @@ $light_gray:#eee;
       text-align: center;
       font-weight: bold;
     }
+  }
+
+  .text {
+    font-size:24px;
+    color:#C03639;
+    margin: 0px auto 40px auto;
+    text-align: center;
+    font-weight: bold;
+    position:relative;
   }
 
 }

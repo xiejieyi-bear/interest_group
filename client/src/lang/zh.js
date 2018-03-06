@@ -185,7 +185,7 @@ export default {
     begin_time: '活动时间',
     duration: '活动时长',
     court_name: '活动场地',
-    charge: '总费用',
+    chargeTotal: '总费用',
     participate_total: '参与人数',
     participate_users: '参加用户'
   },
