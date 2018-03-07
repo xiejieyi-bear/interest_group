@@ -13,6 +13,9 @@ public interface Constant
     //用户未加入活动
     int RETCODE_USR_NO_JOIN_ACTIVITY = 20003;
 
+    // 用户已报名
+    int RETCODE_USER_ALREADY_JOIN = 20004;
+
     // 非法输入
     int RET_CODE_INPUT_ILLEGAL = 10000;
 

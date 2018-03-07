@@ -2,6 +2,7 @@ package com.interest.auth.dao;
 
 import com.interest.auth.daobean.Activity;
 import com.interest.auth.daobean.Court;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -9,7 +10,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author
  */
-public interface ActivityRepository extends CrudRepository<Activity, Long>
+public interface ActivityRepository extends JpaRepository<Activity, Long>
 {
     //根据状态查找活动
     Iterable<Activity> findAllByState(Integer activityState);
