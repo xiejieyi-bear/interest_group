@@ -22,15 +22,6 @@ export function deleteUser(usermark) {
     method: 'delete'
   })
 }
-
-export function fetchActivityList(query) {
-  return request({
-    url: '/activity/all',
-    method: 'get',
-    params: query
-  })
-}
-
 export function fetchFundsList(query) {
   return request({
     url: '/funds/all',

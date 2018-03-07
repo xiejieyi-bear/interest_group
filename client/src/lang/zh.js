@@ -187,7 +187,9 @@ export default {
     court_name: '活动场地',
     chargeTotal: '总费用',
     participate_total: '参与人数',
-    participate_users: '参加用户'
+    participate_users: '参加用户',
+    remark: '备注',
+    activityState: '活动状态'
   },
 
   court_charge_table: {

@@ -18,6 +18,10 @@
         <el-input name="court" type="text" v-model="joinForm.courtName" v-bind:readonly="true" />
       </el-form-item>
 
+      <el-form-item  label="备注:" >
+        <el-input name="remark" type="text" v-model="joinForm.remark" v-bind:readonly="true" />
+      </el-form-item>
+
       <el-form-item  :label="participate_total_label" >
         <el-input name="join_members" type="textarea" v-bind:autosize="true" v-model="joinForm.participateUsers" v-bind:readonly="true" />
       </el-form-item>
@@ -49,9 +53,9 @@
   </div>
 
   <el-dialog title="创建活动" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
+      <el-form ref="dataForm" :model="temp" label-position="left" label-width="150px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('activity_table.begin_time')" prop="begin_time">
-            <el-date-picker v-model="temp.begin_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
+            <el-date-picker v-model="temp.beginTime" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间">
             </el-date-picker>
         </el-form-item>
 
@@ -64,15 +68,24 @@
         </el-form-item>
 
         <el-form-item :label="$t('activity_table.court_name')" prop="court_name">
-            <el-select class="filter-item" v-model="temp.court_name" placeholder="Please select">
+            <el-select class="filter-item" v-model="temp.courtName" placeholder="Please select">
             <el-option v-for="item in  activity_court_options" :key="item.key" :label="item.display_name" :value="item.key">
             </el-option>
             </el-select>
         </el-form-item>
 
+        <el-form-item label="场地数量:">
+          <el-input-number v-model="temp.courtNums"  size="mini" :min="1" :max="10" label="场地数量"></el-input-number>
+        </el-form-item>
+
         <el-form-item :label="$t('activity_table.chargeTotal')" prop="chargeTotal">
           <el-input v-model="temp.chargeTotal"></el-input>
         </el-form-item>
+
+        <el-form-item :label="$t('activity_table.remark')" prop="remark">
+          <el-input v-model="temp.remark"></el-input>
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button   @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
@@ -83,141 +96,192 @@
 </template>
 
 <script>
-import { fetchCourtJoinData, cancel_activity, create_activity } from '@/api/court'
+  import { cancel_activity, create_activity, fetchCourtJoinData, fetchCourtList } from '@/api/court'
 
-import { formatDateYYMMDDHHMM } from '@/utils/common'
+  import { formatDateYYMMDDHHMM } from '@/utils/common'
 
-export default {
-  name: 'join',
-  data() {
-    return {
-      join_nums: 1,
-      isRegistry:false,
-      joinForm: {
-        id: '',
-        beginTime: '2018-01-27',
-        courtName: '苏州独墅湖体育馆',
-        chargeTotal: '80RMB',
-        participateUsers: ['xiejieyi*2', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili', 'xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'].toString(),
-        participate_total: 0
-      },
-      dialogFormVisible: false,
+  export default {
+    name: 'join',
+    data: function() {
+      return {
+        join_nums: 1,
+        isRegistry: false,
+        joinForm: {
+          id: '',
+          beginTime: '2018-01-27',
+          courtName: '苏州独墅湖体育馆',
+          chargeTotal: '80RMB',
+          participateUsers: ['xiejieyi*2', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili', 'xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'].toString(),
+          participate_total: 0
+        },
+        dialogFormVisible: false,
 
-      activity_court_options: [
-        { key: '0', display_name: '独墅湖体育馆' },
-        { key: '1', display_name: '九帮' }
-      ],
-      activity_times_options: [
-        { key: '30', display_name: '30分钟' },
-        { key: '60', display_name: '60分钟' },
-        { key: '90', display_name: '90分钟' },
-        { key: '120', display_name: '120分钟' }
-      ],
-      temp: {
-        begin_time: undefined,
-        duration: 0,
-        court_name: undefined,
-        chargeTotal: 0
-      }
-
-    }
-  },
-  methods: {
-    submitForm() {
-      let params = {
-        'activity_id': this.joinForm.id,
-        'nums': this.join_nums
-      }
-      this.$store.dispatch('JoinActivity', params).then(() => {
-        alert('报名成功')
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    fetchJoinData() {
-      fetchCourtJoinData().then(response => {
-        console.log(response.data)
-        if (response.data && response.data.data) {
-
-          let username = this.$store.getters.username
-          this.joinForm = response.data.data
-          let beginTime = this.joinForm.beginTime
-          let endTime = this.joinForm.beginTime + this.joinForm.duration * 60 * 1000
-
-          this.joinForm.beginTime = formatDateYYMMDDHHMM(new Date(beginTime))
-          this.joinForm.endTime = formatDateYYMMDDHHMM(new Date(endTime))
-
-          this.joinForm.beginTime = this.joinForm.beginTime + ' ~ ' + this.joinForm.endTime
-          // 计算人数
-          let participates = response.data.data.participateUsers
-          // this.joinForm.members = participates
-          let participates_len = 0
-          if (participates) {
-            let subStrs = participates.split(',')
-            let usernames = []
-            subStrs.forEach(function(subStr,index){
-              let subStrStar = subStr.split('*')
-              usernames.push(subStrStar[0])
-              if (subStrStar.length === 1) {
-                participates_len++
-              }else {
-                participates_len = participates_len + parseInt(subStrStar[1])
-              }
-            });
-            if(usernames.includes(username)){
-              this.isRegistry = true
-            }
-          }
-          this.joinForm.participate_total = participates_len
+        courts: [],
+        activity_court_options: [],
+        activity_times_options: [
+          { key: '30', display_name: '30分钟' },
+          { key: '60', display_name: '60分钟' },
+          { key: '90', display_name: '90分钟' },
+          { key: '120', display_name: '120分钟' },
+          { key: '150', display_name: '150分钟' },
+          { key: '180', display_name: '180分钟' }
+        ],
+        temp: {
+          beginTime: undefined,
+          duration: 0,
+          courtName: undefined,
+          chargeTotal: 0,
+          courtNums: 0,
+          remark: ''
         }
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    unRegistry() {
-      cancel_activity().then(response => {
-        console.log(response.data)
-        alert('submit success')
-        // this.joinForm = response.data
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    showActivity() {
-      this.dialogFormVisible = true
-    },
-    createActivity() {
-      create_activity().then(response => {
-        this.dialogFormVisible = false
-        console.log(response.data)
-        alert('submit success')
-        // this.joinForm = response.data
-      }).catch(err => {
-        console.log(err)
-      })
-    }
-
-  },
-  created() {
-    this.fetchJoinData()
-    // window.addEventListener('hashchange', this.afterQRScan)
-  },
-  destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
-  },
-  computed: {
-    // 计算属性的 getter
-    average_charge: function() {
-      // `this` 指向 vm 实例
-      if (this.joinForm.participate_total === 0) {
-        return 0
       }
-      return (this.joinForm.chargeTotal / this.joinForm.participate_total).toFixed(2)
     },
-    participate_total_label: function() {
-      return '已报名(' + this.joinForm.participate_total + ')'
+    methods: {
+      submitForm() {
+        const params = {
+          'activity_id': this.joinForm.id,
+          'nums': this.join_nums
+        }
+        this.$store.dispatch('JoinActivity', params).then(() => {
+          this.fetchJoinData()
+          this.$notify({
+            title: '成功',
+            message: '报名成功',
+            type: 'success',
+            duration: 2000
+          })
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      fetchJoinData: function() {
+        fetchCourtJoinData().then(response => {
+          console.log(response.data)
+          if (response.data && response.data.data) {
+            const username = this.$store.getters.username
+
+            // this.joinForm = response.data.data
+            // 默认取第一个场地信息（暂时只支持一个场地信息）
+            this.joinForm.id = response.data.data.id
+            this.joinForm.chargeTotal = response.data.data.chargeTotal
+            this.joinForm.remark = response.data.data.remark
+            const courts = response.data.data.courts[0]
+
+            const beginTime = courts.beginTime
+            const endTime = courts.beginTime + courts.duration * 60 * 1000
+
+            this.joinForm.beginTime = formatDateYYMMDDHHMM(new Date(beginTime))
+            this.joinForm.endTime = formatDateYYMMDDHHMM(new Date(endTime))
+
+            this.joinForm.beginTime = this.joinForm.beginTime + ' ~ ' + this.joinForm.endTime
+            // 计算人数
+            this.joinForm.courtName = courts.courtName
+
+            const users = response.data.data.participates
+            let participates_len = 0
+            const usernames = []
+            for (const user of users) {
+              participates_len = user.participateNumbers + participates_len
+              if (user.username === username) {
+                this.isRegistry = true
+              }
+              if (user.participateNumbers > 1) {
+                user.username = user.username + '*' + user.participateNumbers
+              }
+              usernames.push(user.username)
+            }
+            this.joinForm.participate_total = participates_len
+            this.joinForm.participateUsers = usernames.join(',')
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      unRegistry() {
+        const username = this.$store.getters.username
+
+        cancel_activity(username, this.joinForm.id).then(response => {
+          console.log(response.data)
+          this.fetchJoinData()
+          this.isRegistry = false
+          this.$notify({
+            title: '成功',
+            message: '取消报名成功',
+            type: 'success',
+            duration: 2000
+          })
+          // this.joinForm = response.data
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      showActivity() {
+        this.fetchCourtList()
+        this.dialogFormVisible = true
+      },
+      createActivity() {
+        const param = {
+          'courts': [{
+            'beginTime': this.temp.beginTime,
+            'duration': this.temp.duration,
+            'courtNums': this.temp.courtNums,
+            'courtID': this.temp.courtID
+          }],
+          'chargeTotal': this.temp.chargeTotal,
+          'remark': this.temp.remark
+        }
+        create_activity(param).then(response => {
+          this.dialogFormVisible = false
+          this.$notify({
+            title: '成功',
+            message: '发布活动成功',
+            type: 'success',
+            duration: 2000
+          })
+          // this.joinForm = response.data
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+
+      fetchCourtList() {
+        fetchCourtList().then(response => {
+          console.log(response.data)
+          if (response.data && response.data.data) {
+            this.courts = response.data.data
+            this.activity_court_options = []
+            for (const court of this.courts) {
+              this.activity_court_options.push(
+                { key: court.id, display_name: court.name })
+            }
+            console.log(this.activity_court_options)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }
+
+    },
+    created() {
+      this.fetchJoinData()
+      // window.addEventListener('hashchange', this.afterQRScan)
+    },
+    destroyed() {
+      // window.removeEventListener('hashchange', this.afterQRScan)
+    },
+    computed: {
+      // 计算属性的 getter
+      average_charge: function() {
+        // `this` 指向 vm 实例
+        if (this.joinForm.participate_total === 0) {
+          return 0
+        }
+        return (this.joinForm.chargeTotal / this.joinForm.participate_total).toFixed(2)
+      },
+      participate_total_label: function() {
+        return '已报名(' + this.joinForm.participate_total + ')'
+      }
     }
-  }
 }
 </script>
 

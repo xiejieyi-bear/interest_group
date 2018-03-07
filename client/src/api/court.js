@@ -10,7 +10,7 @@ export function fetchCourtJoinData(query) {
 
 export function fetchCourtList(query) {
   return request({
-    url: '/court/all',
+    url: '/court',
     method: 'get',
     params: query
   })
@@ -40,17 +40,16 @@ export function getChargeHistory(query) {
   })
 }
 
-export function cancel_activity(data) {
+export function cancel_activity(username, activityID) {
   return request({
-    url: '/activity/cancel',
-    method: 'post',
-    data
+    url: '/activity/join/' + username + '/' + activityID,
+    method: 'delete'
   })
 }
 
 export function create_activity(data) {
   return request({
-    url: '/activity/create',
+    url: '/activity',
     method: 'post',
     data
   })
@@ -64,3 +63,11 @@ export function JoinActivityAPI(data) {
   })
 }
 
+
+export function fetchActivityList(query) {
+  return request({
+    url: '/activity',
+    method: 'get',
+    params: query
+  })
+}

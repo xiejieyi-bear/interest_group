@@ -38,7 +38,7 @@ public class ActivityRest
     @Autowired
     private IActivityService activityService;
 
-    //查询最近上限的活动
+    //查询最近上线的活动
     @RequestMapping(value = "/activity/join", method = RequestMethod.GET)
     public @ResponseBody
     ResultBean getActivity()
