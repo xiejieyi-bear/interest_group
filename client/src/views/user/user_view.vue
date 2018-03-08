@@ -1,20 +1,21 @@
 <template>
   <div class="app-container calendar-list-container">
-    <div class="filter-container">    
+    <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('common.add')}}</el-button>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
-      <el-table-column align="center" :label="$t('user_table.usermark')" width="100px">
-        <template slot-scope="scope">
-          <span>{{scope.row.usermark}}</span>
-        </template>
-      </el-table-column>  
-      
+
       <el-table-column width="150px" align="center" :label="$t('user_table.username')">
         <template slot-scope="scope">
           <span>{{scope.row.username}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" :label="$t('user_table.nickname')" width="100px">
+        <template slot-scope="scope">
+          <span>{{scope.row.nickname}}</span>
         </template>
       </el-table-column>
 
@@ -44,7 +45,7 @@
 
       <el-table-column align="center" :label="$t('user_table.actions')" min-width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleDelete(scope.row)">{{$t('common.delete')}}</el-button> 
+          <el-button type="primary" size="mini" @click="handleDelete(scope.row)">{{$t('common.delete')}}</el-button>
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('common.edit')}}</el-button>
           <el-button type="primary" size="mini" style="width:100px" @click="showChargeHistory(scope.row)">{{$t('user_table.charge_history')}}</el-button>
           <el-button type="primary" size="mini" style="width:100px" @click="showConsumeHistory(scope.row)">{{$t('user_table.consume_history')}}</el-button>
@@ -89,12 +90,12 @@
 
     <el-dialog width='800px' title="充值记录" :visible.sync="dialogChargeVisible">
         <el-table :key='chargeTableKey' :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
-      style="width: 100%">       
+      style="width: 100%">
             <el-table-column width="150px" align="center" :label="$t('user_charge_table.username')">
                 <template slot-scope="scope">
                   <span>{{scope.row.username}}</span>
                 </template>
-            </el-table-column>            
+            </el-table-column>
             <el-table-column width="150px" :label="$t('user_charge_table.time')">
                 <template slot-scope="scope">
                   <span>{{scope.row.time}}</span>
@@ -110,18 +111,18 @@
                 <template slot-scope="scope">
                   <span>{{scope.row.desc}}</span>
                 </template>
-            </el-table-column>      
-        </el-table>   
+            </el-table-column>
+        </el-table>
     </el-dialog>
 
     <el-dialog width='800px' title="消费记录" :visible.sync="dialogConsumeVisible">
         <el-table :key='consumeTableKey' :data="consumeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
-      style="width: 100%">       
+      style="width: 100%">
             <el-table-column width="150px" align="center" :label="$t('user_consumer_table.username')">
                 <template slot-scope="scope">
                   <span>{{scope.row.username}}</span>
                 </template>
-            </el-table-column>            
+            </el-table-column>
             <el-table-column width="150px" :label="$t('user_consumer_table.time')">
                 <template slot-scope="scope">
                   <span>{{scope.row.time}}</span>
@@ -143,15 +144,15 @@
                 <template slot-scope="scope">
                   <span>{{scope.row.participate_total}}</span>
                 </template>
-            </el-table-column>   
+            </el-table-column>
 
             <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.consume')">
                 <template slot-scope="scope">
                   <span>{{scope.row.consume}}</span>
                 </template>
-            </el-table-column>         
-        </el-table>   
-    </el-dialog>  
+            </el-table-column>
+        </el-table>
+    </el-dialog>
 
   </div>
 </template>

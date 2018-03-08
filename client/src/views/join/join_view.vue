@@ -53,7 +53,8 @@
   </div>
 
   <el-dialog title="创建活动" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :model="temp" label-position="left" label-width="150px" style='width: 400px; margin-left:50px;'>
+      <el-form :rules="activity_rules" ref="dataForm" :model="temp" label-position="left" label-width="150px"
+               style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('activity_table.begin_time')" prop="begin_time">
             <el-date-picker v-model="temp.beginTime" type="datetime" format="yyyy-MM-dd HH:mm" placeholder="选择日期时间">
             </el-date-picker>
@@ -68,7 +69,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('activity_table.court_name')" prop="court_name">
-            <el-select class="filter-item" v-model="temp.courtName" placeholder="Please select">
+            <el-select class="filter-item" v-model="temp.courtID" placeholder="Please select">
             <el-option v-for="item in  activity_court_options" :key="item.key" :label="item.display_name" :value="item.key">
             </el-option>
             </el-select>
@@ -79,7 +80,7 @@
         </el-form-item>
 
         <el-form-item :label="$t('activity_table.chargeTotal')" prop="chargeTotal">
-          <el-input v-model="temp.chargeTotal"></el-input>
+          <el-input type="number" max=1000 v-model.number="temp.chargeTotal"  ></el-input>
         </el-form-item>
 
         <el-form-item :label="$t('activity_table.remark')" prop="remark">
@@ -114,17 +115,21 @@
           participateUsers: ['xiejieyi*2', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili', 'xiejieyi', 'xueweidong', 'shirongrong', 'hanqing', 'zhoujun', 'lihuili'].toString(),
           participate_total: 0
         },
+
+        activity_rules: {
+          chargeTotal: [{ required: true, type: 'number', trigger: 'change', max: 1000 }]
+        },
         dialogFormVisible: false,
 
         courts: [],
         activity_court_options: [],
         activity_times_options: [
-          { key: '30', display_name: '30分钟' },
-          { key: '60', display_name: '60分钟' },
-          { key: '90', display_name: '90分钟' },
-          { key: '120', display_name: '120分钟' },
-          { key: '150', display_name: '150分钟' },
-          { key: '180', display_name: '180分钟' }
+          { key: 30, display_name: '30分钟' },
+          { key: 60, display_name: '60分钟' },
+          { key: 90, display_name: '90分钟' },
+          { key: 120, display_name: '120分钟' },
+          { key: 150, display_name: '150分钟' },
+          { key: 180, display_name: '180分钟' }
         ],
         temp: {
           beginTime: undefined,
@@ -222,7 +227,7 @@
       createActivity() {
         const param = {
           'courts': [{
-            'beginTime': this.temp.beginTime,
+            'beginTime': formatDateYYMMDDHHMM(new Date(this.temp.beginTime)),
             'duration': this.temp.duration,
             'courtNums': this.temp.courtNums,
             'courtID': this.temp.courtID

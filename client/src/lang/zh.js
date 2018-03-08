@@ -155,7 +155,7 @@ export default {
     // consume_history: '消费记录'
   },
   user_table: {
-    usermark: '用户标识',
+    nickname: '姓名',
     username: '用户名',
     balance: '余额',
     telephone: '电话',

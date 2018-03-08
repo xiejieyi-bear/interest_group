@@ -1,6 +1,6 @@
 <template>
   <div class="app-container calendar-list-container">
-    <div class="filter-container">    
+    <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">{{$t('common.add')}}</el-button>
     </div>
 
@@ -32,23 +32,23 @@
           <span>{{scope.row.balance}}</span>
         </template>
       </el-table-column>
-      
+
       <el-table-column width="150px" align="center" :label="$t('court_table.telephone')">
         <template slot-scope="scope">
           <span>{{scope.row.telephone}}</span>
         </template>
       </el-table-column>
-    
+
 
       <el-table-column align="center" :label="$t('court_table.actions')" min-width="350" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleDelete(scope.row)">{{$t('common.delete')}}</el-button>         
+          <el-button type="primary" size="mini" @click="handleDelete(scope.row)">{{$t('common.delete')}}</el-button>
 
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('common.edit')}}</el-button>
-          <el-button type="primary" size="mini" style="width:100px" @click="showChargeHistory(scope.row)">{{$t('court_table.charge_history')}}</el-button>          
+          <el-button type="primary" size="mini" style="width:100px" @click="showChargeHistory(scope.row)">{{$t('court_table.charge_history')}}</el-button>
         </template>
       </el-table-column>
-    </el-table>    
+    </el-table>
 
     <el-dialog title="创建场地" :visible.sync="dialogFormVisible">
       <el-form :rules="rules" ref="dataForm" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
@@ -76,7 +76,7 @@
 
     <el-dialog width='800px' title="资金明细" :visible.sync="dialogChargeVisible">
         <el-table :key='chargeTableKey' :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
-      style="width: 100%">       
+      style="width: 100%">
             <el-table-column width="150px" align="center" :label="$t('court_charge_table.name')">
                 <template slot-scope="scope">
                   <span>{{scope.row.name}}</span>
@@ -102,9 +102,9 @@
                 <template slot-scope="scope">
                   <span>{{scope.row.desc}}</span>
                 </template>
-            </el-table-column>      
-        </el-table>   
-    </el-dialog>   
+            </el-table-column>
+        </el-table>
+    </el-dialog>
 
   </div>
 </template>
@@ -158,7 +158,7 @@ export default {
     getList() {
       this.listLoading = true
       fetchCourtList(this.listQuery).then(response => {
-        this.list = response.data.items
+        this.list = response.data.data
         // this.total = response.data.total
         this.listLoading = false
       })

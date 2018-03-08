@@ -82,6 +82,7 @@ export default {
 
           activityItem.chargeTotal = item.chargeTotal
           activityItem.state = item.state
+          activityItem.remark = item.remark
           // 默认选第一个，暂时不支持多个
 
           if (item.courts.length >= 1) {
