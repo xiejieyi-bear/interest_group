@@ -23,7 +23,7 @@ public class UserFinance
 
     //资金类型：0：recharge 充值(income-收入） 1：expenditure 支出
     private Integer type;
-    private Integer amount;
+    private float amount;
     // 备注说明
     private String remark;
     private Timestamp time;
@@ -95,12 +95,12 @@ public class UserFinance
         this.type = type;
     }
 
-    public Integer getAmount()
+    public float getAmount()
     {
         return amount;
     }
 
-    public void setAmount(Integer amount)
+    public void setAmount(float amount)
     {
         this.amount = amount;
     }

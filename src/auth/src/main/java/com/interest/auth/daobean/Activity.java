@@ -16,7 +16,7 @@ public class Activity
     //总费用信息，手工输入，以支持自定义使用多少公共经费
     private Integer chargeTotal;
 
-    //活动状态：0 ：报名中 1：已结束
+    //活动状态：0 ：报名中 1：未发布，2：活动中 3：结束
     private Integer state;
 
     //活动描述信息

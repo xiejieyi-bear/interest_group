@@ -122,29 +122,23 @@
                   <span>{{scope.row.time}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="110px" align="center" :label="$t('user_consumer_table.location')">
-                <template slot-scope="scope">
-                  <span>{{scope.row.location}}</span>
-                </template>
-            </el-table-column>
 
-            <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.self_num')">
-                <template slot-scope="scope">
-                  <span>{{scope.row.self_num}}</span>
-                </template>
-            </el-table-column>
+          <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.consume')">
+            <template slot-scope="scope">
+              <span>{{scope.row.amount}}</span>
+            </template>
+          </el-table-column>
 
-            <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.participate_total')">
-                <template slot-scope="scope">
-                  <span>{{scope.row.participate_total}}</span>
-                </template>
-            </el-table-column>
 
-            <el-table-column min-width="80px" align="center" :label="$t('user_consumer_table.consume')">
-                <template slot-scope="scope">
-                  <span>{{scope.row.consume}}</span>
-                </template>
-            </el-table-column>
+          <el-table-column align="center" :label="$t('user_consumer_table.activity')" min-width="200px"
+                           class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <el-button type="primary" size="mini" @click="viewActivityDetail(scope.row)">{{$t('common.view')
+                }}</el-button>
+            </template>
+          </el-table-column>
+
+
         </el-table>
     </el-dialog>
 
@@ -155,7 +149,7 @@
           <el-input v-model="chargeTemp.username" v-bind:readonly="true" ></el-input>
         </el-form-item>
 
-        <el-form-item :label="$t('user_charge_table.charge')" prop="charge">
+        <el-form-item :label="$t('user_charge_table.amount')" prop="amount">
           <el-input v-model.number="chargeTemp.amount"></el-input>
         </el-form-item>
 
@@ -205,18 +199,13 @@ export default {
         remark: ''
       },
       user_rules: {
-        //  name: [
-        //    { required: true, message: '请输入活动名称', trigger: 'blur' },
-        //    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        //  ],
-        usermark: [{ required: true, trigger: 'change', validator: validate }],
         username: [{ required: true, trigger: 'change', validator: validate }],
         telephone: [{ max: 12, message: '长度在 0 到 12 个字符', trigger: 'change' }],
         balance: [{ trigger: 'change', validator: validate }]
       },
 
       charge_rules: {
-        charge: [{ required: true, type: 'number', max: 10000, trigger: 'change' }]
+        amount: [{ required: true, type: 'number', max: 10000, trigger: 'change' }]
       },
 
       chargeTableKey: 1,

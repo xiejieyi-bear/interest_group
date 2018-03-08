@@ -29,7 +29,7 @@ public interface Constant
     int ROLE_TYPE_ADMIN = 0;
     int ROLE_TYPE_NORMAL = 1;
 
-    enum ACTIVITY_STATE {ONGOING, END};
+    enum ACTIVITY_STATE {ONGOING, DRAFT, ON_ACTIVE, END};
 }
 
 

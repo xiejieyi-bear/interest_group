@@ -7,6 +7,7 @@ import com.interest.auth.dao.UserFinanceRepository;
 import com.interest.auth.dao.UserRepository;
 import com.interest.auth.daobean.User;
 import com.interest.auth.daobean.UserFinance;
+import com.interest.auth.service.IFinanceService;
 import com.interest.auth.util.HGException;
 import com.interest.auth.util.ValidateUtil;
 import org.apache.commons.logging.Log;
@@ -35,6 +36,9 @@ public class FinanceRest
 
     @Autowired
     private ActivityRepository activityRepository;
+
+    @Autowired
+    private IFinanceService financeService;
 
 
     // 用户充值
@@ -71,33 +75,7 @@ public class FinanceRest
     public @ResponseBody
     ResultBean userExpenditure(@RequestBody UserFinanceBean payload) throws HGException
     {
-        String username = payload.getUsername();
-        UserFinance userFinance = new UserFinance();
-
-        userFinance.setType(Constant.FINANCE_TYPE_EXPENDITURE);
-        userFinance.setUsername(payload.getUsername());
-        userFinance.setRemark(payload.getRemark());
-        Calendar now = Calendar.getInstance();
-        userFinance.setTime(new Timestamp(now.getTimeInMillis()));
-        Integer amount = payload.getAmount();
-        amount = 0-amount;
-
-        //判断活动是否存在
-        Long activityID = payload.getActivityID();
-        if(!activityRepository.exists(activityID)){
-            throw new HGException(Constant.RET_CODE_INPUT_ILLEGAL, "userExpenditure can not find activity ");
-        }
-        userFinance.setActivityID(payload.getActivityID());
-
-        userFinance.setAmount(amount);
-        //校验用户名是否存在
-        User user = userRepository.findByUsername(username);
-        if (user == null)
-        {
-            throw new HGException(Constant.RETCODE_NO_RECORD, "userExpenditure -can not find user");
-        }
-
-        userFinanceRepository.save(userFinance);
+        financeService.userExpenditure(payload);
         logger.info("user expenditure success");
         return new ResultBean(Constant.SUCCESS, null);
     }

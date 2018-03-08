@@ -16,7 +16,7 @@ public class UserFinanceBean
     private String username;
 
     @Max(1000)
-    private int amount;
+    private float amount;
 
     @Max(5)
     private int type;
@@ -56,12 +56,12 @@ public class UserFinanceBean
         this.username = username;
     }
 
-    public int getAmount()
+    public float getAmount()
     {
         return amount;
     }
 
-    public void setAmount(int amount)
+    public void setAmount(float amount)
     {
         this.amount = amount;
     }

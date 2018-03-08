@@ -179,7 +179,8 @@ export default {
     location: '活动地点',
     self_num: '携带人数',
     participate_total: '总人数',
-    consume: '分摊金额'
+    consume: '分摊金额',
+    activity: '活动详情'
   },
   activity_table: {
     begin_time: '活动时间',
@@ -209,7 +210,8 @@ export default {
     add: '添加',
     delete: '删除',
     edit: '编辑',
-    charge: '充值'
+    charge: '充值',
+    view: '查看'
   }
 
 }
