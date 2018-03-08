@@ -19,7 +19,9 @@ public interface Constant
     // 非法输入
     int RET_CODE_INPUT_ILLEGAL = 10000;
 
-
+    // 资金类型：0 充值 1: 支出
+    int FINANCE_TYPE_RECHARGE = 0;
+    int FINANCE_TYPE_EXPENDITURE = 1;
 
     // 系统错误
     int RETCODE_SYSTEM_ERROR = 10001;

@@ -109,6 +109,9 @@ public class ActivityService implements IActivityService
     {
         List<ActivityBean.CourtBean> courts = payload.getCourts();
 
+        if(courts == null  || courts.size() == 0){
+            throw new HGException(Constant.RET_CODE_INPUT_ILLEGAL,"courts is empty");
+        }
         Activity activity = new Activity();
         activity.setRemark(payload.getRemark());
         activity.setChargeTotal(payload.getChargeTotal());

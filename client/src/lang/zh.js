@@ -169,9 +169,9 @@ export default {
   user_charge_table: {
     name: '用户名',
     time: '充值时间',
-    charge: '充值金额',
     charge_type: '充值方式',
-    desc: '说明'
+    remark: '说明',
+    amount: '金额'
   },
   user_consumer_table: {
     name: '用户名',
@@ -208,7 +208,8 @@ export default {
   common: {
     add: '添加',
     delete: '删除',
-    edit: '编辑'
+    edit: '编辑',
+    charge: '充值'
   }
 
 }

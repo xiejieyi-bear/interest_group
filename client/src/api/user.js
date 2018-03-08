@@ -30,18 +30,26 @@ export function fetchFundsList(query) {
   })
 }
 
-export function getUserChargeHistory(query) {
+export function getUserChargeHistory(username) {
   return request({
-    url: '/user/chargehistory',
-    method: 'get',
-    params: query
+    url: '/finance/recharge/user/' + username,
+    method: 'get'
   })
 }
 
-export function getUserConsumeHistory(query) {
+export function getUserConsumeHistory(username) {
   return request({
-    url: '/user/consumehistory',
-    method: 'get',
-    params: query
+    url: '/finance/expenditure/user/' + username ,
+    method: 'get'
   })
 }
+
+export function reChargeBill(data) {
+  return request({
+    url: '/finance/recharge/user',
+    method: 'post',
+    data
+  })
+}
+
+

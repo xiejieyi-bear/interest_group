@@ -25,17 +25,17 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" :label="$t('user_table.charge_total')">
-        <template slot-scope="scope">
-          <span>{{scope.row.charge_total}}</span>
-        </template>
-      </el-table-column>
+      <!--<el-table-column width="80px" :label="$t('user_table.charge_total')">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span>{{scope.row.charge_total}}</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
 
-      <el-table-column width="80px" :label="$t('user_table.consume_total')">
-        <template slot-scope="scope">
-          <span>{{scope.row.consume_total}}</span>
-        </template>
-      </el-table-column>
+      <!--<el-table-column width="80px" :label="$t('user_table.consume_total')">-->
+        <!--<template slot-scope="scope">-->
+          <!--<span>{{scope.row.consume_total}}</span>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
 
       <el-table-column width="80px" :label="$t('user_table.balance')">
         <template slot-scope="scope">
@@ -49,16 +49,10 @@
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{$t('common.edit')}}</el-button>
           <el-button type="primary" size="mini" style="width:100px" @click="showChargeHistory(scope.row)">{{$t('user_table.charge_history')}}</el-button>
           <el-button type="primary" size="mini" style="width:100px" @click="showConsumeHistory(scope.row)">{{$t('user_table.consume_history')}}</el-button>
+          <el-button type="primary" size="mini" @click="handleCharge(scope.row)">{{$t('common.charge')}}</el-button>
         </template>
       </el-table-column>
     </el-table>
-
-   <!--  <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
-        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
-      </el-pagination>
-    </div> -->
-
     <el-dialog title="创建用户" :visible.sync="dialogFormVisible">
       <el-form :rules="user_rules" ref="dataForm" :model="temp" label-position="left" label-width="100px" style='width: 400px; margin-left:50px;'>
         <el-form-item :label="$t('user_table.usermark')" prop="usermark">
@@ -91,25 +85,25 @@
     <el-dialog width='800px' title="充值记录" :visible.sync="dialogChargeVisible">
         <el-table :key='chargeTableKey' :data="chargeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
-            <el-table-column width="150px" align="center" :label="$t('user_charge_table.username')">
+            <el-table-column width="150px" align="center" :label="$t('user_charge_table.name')">
                 <template slot-scope="scope">
                   <span>{{scope.row.username}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="150px" :label="$t('user_charge_table.time')">
+            <el-table-column width="200px" :label="$t('user_charge_table.time')">
                 <template slot-scope="scope">
                   <span>{{scope.row.time}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="110px" align="center" :label="$t('user_charge_table.charge')">
+            <el-table-column width="110px" align="center" :label="$t('user_charge_table.amount')">
                 <template slot-scope="scope">
-                  <span>{{scope.row.charge}}</span>
+                  <span>{{scope.row.amount}}</span>
                 </template>
             </el-table-column>
 
-            <el-table-column min-width="150px" align="center" :label="$t('user_charge_table.desc')">
+            <el-table-column min-width="150px" align="center" :label="$t('user_charge_table.remark')">
                 <template slot-scope="scope">
-                  <span>{{scope.row.desc}}</span>
+                  <span>{{scope.row.remark}}</span>
                 </template>
             </el-table-column>
         </el-table>
@@ -118,12 +112,12 @@
     <el-dialog width='800px' title="消费记录" :visible.sync="dialogConsumeVisible">
         <el-table :key='consumeTableKey' :data="consumeList" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row
       style="width: 100%">
-            <el-table-column width="150px" align="center" :label="$t('user_consumer_table.username')">
+            <el-table-column width="150px" align="center" :label="$t('user_consumer_table.name')">
                 <template slot-scope="scope">
                   <span>{{scope.row.username}}</span>
                 </template>
             </el-table-column>
-            <el-table-column width="150px" :label="$t('user_consumer_table.time')">
+            <el-table-column width="200px" :label="$t('user_consumer_table.time')">
                 <template slot-scope="scope">
                   <span>{{scope.row.time}}</span>
                 </template>
@@ -154,11 +148,34 @@
         </el-table>
     </el-dialog>
 
+    <el-dialog title="充值" :visible.sync="dialogREChargeVisible">
+      <el-form :rules="charge_rules" ref="chargeForm" :model="chargeTemp" label-position="left" label-width="100px"
+               style='width: 400px; margin-left:50px;'>
+        <el-form-item :label="$t('user_charge_table.name')" prop="username">
+          <el-input v-model="chargeTemp.username" v-bind:readonly="true" ></el-input>
+        </el-form-item>
+
+        <el-form-item :label="$t('user_charge_table.charge')" prop="charge">
+          <el-input v-model.number="chargeTemp.amount"></el-input>
+        </el-form-item>
+
+        <el-form-item :label="$t('user_charge_table.remark')" prop="remark">
+          <el-input v-model="chargeTemp.remark"  ></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
+        <el-button type="primary" @click="handleRecharge">{{$t('table.confirm')}}</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { fetchUserList, createUser, deleteUser, getUserChargeHistory, getUserConsumeHistory } from '@/api/user'
+import { fetchUserList, createUser, deleteUser, getUserChargeHistory, getUserConsumeHistory, reChargeBill } from '@/api/user'
+
+import { formatDateYYMMDDHHMMSS } from '@/utils/common'
 export default {
 
   name: 'userTable',
@@ -182,6 +199,11 @@ export default {
         balance: '',
         telephone: ''
       },
+      chargeTemp: {
+        username: '',
+        amount: 0,
+        remark: ''
+      },
       user_rules: {
         //  name: [
         //    { required: true, message: '请输入活动名称', trigger: 'blur' },
@@ -193,11 +215,16 @@ export default {
         balance: [{ trigger: 'change', validator: validate }]
       },
 
+      charge_rules: {
+        charge: [{ required: true, type: 'number', max: 10000, trigger: 'change' }]
+      },
+
       chargeTableKey: 1,
       chargeList: null,
       dialogChargeVisible: false,
 
       dialogConsumeVisible: false,
+      dialogREChargeVisible: false,
       consumeTableKey: 2,
       consumeList: null
 
@@ -267,19 +294,49 @@ export default {
     showChargeHistory(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogChargeVisible = true
-      getUserChargeHistory(this.temp.usermark).then(response => {
-        this.chargeList = response.data.items
-        // this.total = response.data.total
-        // this.listLoading = false
+      getUserChargeHistory(this.temp.username).then(response => {
+        this.chargeList = response.data.data
+        function transeTimestamp(item) {
+          const timestamp = item.time
+          item.time = formatDateYYMMDDHHMMSS(new Date(timestamp))
+          return item
+        }
+        this.chargeList.map(transeTimestamp)
       })
     },
     showConsumeHistory(row) {
       this.temp = Object.assign({}, row) // copy obj
       this.dialogConsumeVisible = true
-      getUserConsumeHistory(this.temp.usermark).then(response => {
-        this.consumeList = response.data.items
-        // this.total = response.data.total
-        // this.listLoading = false
+      getUserConsumeHistory(this.temp.username).then(response => {
+        this.consumeList = response.data.data
+        function transeTimestamp(item) {
+          const timestamp = item.time
+          item.time = formatDateYYMMDDHHMMSS(new Date(timestamp))
+          return item
+        }
+        this.consumeList.map(transeTimestamp)
+      })
+    },
+
+    handleCharge(row) {
+      this.chargeTemp.username = row.username
+      this.dialogREChargeVisible = true
+    },
+
+    handleRecharge() {
+      this.$refs['chargeForm'].validate((valid) => {
+        if (valid) {
+          reChargeBill(this.chargeTemp).then(() => {
+            this.getList()
+            this.dialogREChargeVisible = false
+            this.$notify({
+              title: '成功',
+              message: '充值成功',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
       })
     }
 

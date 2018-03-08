@@ -3,6 +3,7 @@ package com.interest.auth.rest;
 import com.interest.auth.Constant;
 import com.interest.auth.bean.ResultBean;
 import com.interest.auth.bean.UserBean;
+import com.interest.auth.dao.UserFinanceRepository;
 import com.interest.auth.dao.UserRepository;
 import com.interest.auth.daobean.User;
 import com.interest.auth.util.HGException;
@@ -10,15 +11,12 @@ import com.interest.auth.util.Security;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.encrypt.BytesEncryptor;
-import org.springframework.security.crypto.encrypt.Encryptors;
-import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -26,6 +24,9 @@ import java.util.function.Consumer;
 public class UserRest
 {
     protected Log logger = LogFactory.getLog(getClass());
+
+    @Autowired
+    private UserFinanceRepository userFinanceRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -96,16 +97,25 @@ public class UserRest
     @RequestMapping(value = "/user",method = RequestMethod.GET )
     public @ResponseBody ResultBean queryAllUser()
     {
+
+        final List<UserBean> resultBean = new ArrayList<UserBean>();
+
         Consumer<User> consumerUsers = new Consumer<User>() {
             public void accept(User user) {
-                user.setEncrypt("");
-                user.setSalt("");
-                System.out.println(user);
+                UserBean temp = new UserBean();
+                temp.setBalance(userFinanceRepository.getBalanceByUsername(user.getUsername()));
+                temp.setNickname(user.getNickname());
+                temp.setRole(user.getRole());
+                temp.setUsername(user.getUsername());
+                temp.setTelephone(user.getTelephone());
+                resultBean.add(temp);
             }
         };
+
         Iterable users = userRepository.findAll();
-        //users.forEach(consumerUsers);
-        ResultBean result = new ResultBean(Constant.SUCCESS,users);
+        users.forEach(consumerUsers);
+
+        ResultBean result = new ResultBean(Constant.SUCCESS,resultBean);
         return result;
     }
 

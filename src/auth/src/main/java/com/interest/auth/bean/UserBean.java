@@ -13,6 +13,33 @@ public class UserBean
     private String nickname;
     private String telephone;
     private String email;
+    private Integer balance;
+    private Integer role=1;
+
+    public UserBean()
+    {
+
+    }
+
+    public Integer getRole()
+    {
+        return role;
+    }
+
+    public void setRole(Integer role)
+    {
+        this.role = role;
+    }
+
+    public Integer getBalance()
+    {
+        return balance;
+    }
+
+    public void setBalance(Integer balance)
+    {
+        this.balance = balance;
+    }
 
     public String getUsername()
     {
