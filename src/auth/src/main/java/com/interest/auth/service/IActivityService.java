@@ -21,6 +21,8 @@ public interface IActivityService
 
     void createActivity(ActivityBean payload) throws HGException;
 
+    void updateActivity(ActivityBean payload, Long activityID) throws HGException;
+
     void cancelJoinActivity(String username,String activityID) throws HGException;
 
     @Transactional

@@ -19,7 +19,8 @@ public class ActivityBean
     @Size(max=256, message = "remark is exceed of max length")
     private String remark;
 
-    @Size(max=3)
+    //暂时只允许1个场地信息
+    @Size(max=1)
     private List<CourtBean> courts;
 
     public static class CourtBean

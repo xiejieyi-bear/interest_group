@@ -191,7 +191,9 @@ export default {
     participate_users: '参加用户',
     remark: '备注',
     activityState: '活动状态',
-    settlement: '结算'
+    settlement: '结算',
+    cancel: '取消'
+
   },
 
   court_charge_table: {

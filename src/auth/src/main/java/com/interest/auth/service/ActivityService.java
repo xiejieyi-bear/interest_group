@@ -123,36 +123,7 @@ public class ActivityService implements IActivityService
         activity.setChargeTotal(payload.getChargeTotal());
         activity.setState(Constant.ACTIVITY_STATE.ONGOING.ordinal());
 
-        ActivityCourt courtDao;
-        Set<ActivityCourt> activityCourts = new HashSet<>(10);
-
-        for (ActivityBean.CourtBean courtBean : courts)
-        {
-            courtDao = new ActivityCourt();
-            String beginTime = courtBean.getBeginTime();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-            Date parsedDate;
-            try
-            {
-                parsedDate = dateFormat.parse(beginTime);
-            } catch (ParseException e)
-            {
-                throw new HGException(Constant.RET_CODE_INPUT_ILLEGAL, "dataTime input is illegal");
-            }
-            Timestamp timestamp = new Timestamp(parsedDate.getTime());
-
-            courtDao.setBeginTime(timestamp);
-            courtDao.setDuration(courtBean.getDuration());
-            courtDao.setCourtNums(courtBean.getCourtNums());
-
-            Long courtID = courtBean.getCourtID();
-            Court court = courtRepository.findOne(courtID);
-            String courtName = court.getName();
-            courtDao.setCourtName(courtName);
-            courtDao.setActivity(activity);
-            activityCourts.add(courtDao);
-        }
+        Set<ActivityCourt> activityCourts = getActivityCourts(activity, courts);
         activity.setCourts(activityCourts);
         activityRepository.save(activity);
     }
@@ -228,5 +199,55 @@ public class ActivityService implements IActivityService
             financeService.userExpenditure(payload);
         }
         activityRepository.save(activity);
+    }
+
+    @Override
+    public void updateActivity(ActivityBean payload, Long activityID) throws HGException
+    {
+        //先查活动
+        Activity activity = activityRepository.findOne(activityID);
+        if(activity == null){
+            throw new HGException(Constant.RET_CODE_INPUT_ILLEGAL,"can not find activity");
+        }
+        Set<ActivityCourt> activityCourts = getActivityCourts(activity, payload.getCourts());
+        activity.setCourts(activityCourts);
+        activity.setChargeTotal(payload.getChargeTotal());
+        activity.setRemark(activity.getRemark());
+        activityRepository.save(activity);
+    }
+
+    private Set<ActivityCourt> getActivityCourts(Activity activity, List<ActivityBean.CourtBean> courts2) throws HGException
+    {
+        ActivityCourt courtDao;
+        Set<ActivityCourt> activityCourts = new HashSet<>(10);
+
+        for (ActivityBean.CourtBean courtBean : courts2)
+        {
+            courtDao = new ActivityCourt();
+            String beginTime = courtBean.getBeginTime();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+            Date parsedDate;
+            try
+            {
+                parsedDate = dateFormat.parse(beginTime);
+            } catch (ParseException e)
+            {
+                throw new HGException(Constant.RET_CODE_INPUT_ILLEGAL, "dataTime input is illegal");
+            }
+            Timestamp timestamp = new Timestamp(parsedDate.getTime());
+
+            courtDao.setBeginTime(timestamp);
+            courtDao.setDuration(courtBean.getDuration());
+            courtDao.setCourtNums(courtBean.getCourtNums());
+
+            Long courtID = courtBean.getCourtID();
+            Court court = courtRepository.findOne(courtID);
+            String courtName = court.getName();
+            courtDao.setCourtName(courtName);
+            courtDao.setActivity(activity);
+            activityCourts.add(courtDao);
+        }
+        return activityCourts;
     }
 }

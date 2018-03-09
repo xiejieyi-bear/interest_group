@@ -65,6 +65,10 @@
           <el-button v-show="scope.row.state==0 || scope.row.state == 2" type="primary" size="mini"
                      @click="handleSettlement(scope.row)">{{$t('activity_table.settlement')
             }}</el-button>
+
+          <el-button v-show="scope.row.state==0" type="primary" size="mini"
+                     @click="cancelActivity(scope.row)">{{$t('activity_table.cancel')
+            }}</el-button>
         </template>
       </el-table-column>
 
@@ -114,7 +118,7 @@
 </template>
 
 <script>
-  import { fetchActivityList, create_activity,fetchCourtList } from '@/api/court'
+  import { fetchActivityList, create_activity, fetchCourtList } from '@/api/court'
   import { activitySettle } from '@/api/user'
   import { formatDateYYMMDDHHMM } from '@/utils/common'
 
@@ -266,6 +270,9 @@
         }).catch(err => {
           console.log(err)
         })
+      },
+      cancelActivity(row) {
+
       }
     }
   }

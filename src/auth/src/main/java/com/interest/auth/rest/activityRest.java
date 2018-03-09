@@ -117,6 +117,14 @@ public class ActivityRest
         return result;
     }
 
+    //更新活动信息，包括状态
+    @RequestMapping(value = "/activity/{id}", method = RequestMethod.PUT)
+    public @ResponseBody ResultBean updateActivity(@RequestBody ActivityBean payload,@PathVariable Long id) throws
+            HGException{
+        activityService.updateActivity(payload,id);
+        return new ResultBean(Constant.SUCCESS,null);
+    }
+
     //结算活动
     @RequestMapping(value = "/activity/settlement/{id}", method = RequestMethod.POST)
     public @ResponseBody ResultBean Settlement(@PathVariable Long id) throws HGException
@@ -130,5 +138,4 @@ public class ActivityRest
         activityService.handleSettlement(activity);
         return new ResultBean(Constant.SUCCESS,null);
     }
-
 }

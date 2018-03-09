@@ -89,7 +89,6 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button   @click="dialogFormVisible = false">{{$t('table.cancel')}}</el-button>
         <el-button type="primary" @click="createActivity">{{$t('table.confirm')}}</el-button>
       </div>
     </el-dialog>
