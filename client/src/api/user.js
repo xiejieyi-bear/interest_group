@@ -39,7 +39,7 @@ export function getUserChargeHistory(username) {
 
 export function getUserConsumeHistory(username) {
   return request({
-    url: '/finance/expenditure/user/' + username ,
+    url: '/finance/expenditure/user/' + username,
     method: 'get'
   })
 }
@@ -52,4 +52,10 @@ export function reChargeBill(data) {
   })
 }
 
+export function activitySettle(id) {
+  return request({
+    url: '/activity/settlement/' + id,
+    method: 'post'
+  })
+}
 

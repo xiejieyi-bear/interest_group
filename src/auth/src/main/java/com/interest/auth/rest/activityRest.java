@@ -35,8 +35,7 @@ public class ActivityRest
     @Autowired
     private IActivityService activityService;
 
-    @Autowired
-    private IFinanceService financeService;
+
 
     //查询最近上线的活动
     @RequestMapping(value = "/activity/join", method = RequestMethod.GET)
@@ -128,41 +127,7 @@ public class ActivityRest
         {
             throw new HGException(Constant.RETCODE_NO_RECORD, "cancelParticipateActivity -can not find activity");
         }
-        // 活动标志为end
-        activity.setState(Constant.ACTIVITY_STATE.END.ordinal());
-
-        // 统计分摊费用，更新表格
-        activity.getParticipates();
-        Integer chargeTotal = activity.getChargeTotal();
-
-        Set<ActivityParticipate> participates = activity.getParticipates();
-        List<String> usernames = new ArrayList<String>(10);
-        float chargeAverage = 0.0f;
-        if(null != participates && participates.size() >=1 ){
-            Integer userNums = 0;
-            for (ActivityParticipate participate : participates)
-            {
-                userNums = userNums + participate.getParticipateNumbers();
-                usernames.add(participate.getUsername());
-            }
-
-            chargeAverage = chargeTotal/userNums;
-            DecimalFormat df = new DecimalFormat(".00");
-            chargeAverage = Float.valueOf(df.format(chargeAverage));
-
-        }
-        //TODO 需要用到事务
-        //TODO 暂时无性能问题，先用遍历的方式，后期寻求使用拼接SQL
-        UserFinanceBean payload;
-        for(String username:usernames){
-            payload = new UserFinanceBean();
-            payload.setActivityID(id);
-            payload.setAmount(chargeAverage);
-            payload.setRemark("Settlement auto when activity is ended");
-            payload.setUsername(username);
-            financeService.userExpenditure(payload);
-        }
-
+        activityService.handleSettlement(activity);
         return new ResultBean(Constant.SUCCESS,null);
     }
 

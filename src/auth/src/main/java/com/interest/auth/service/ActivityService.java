@@ -3,6 +3,7 @@ package com.interest.auth.service;
 import com.interest.auth.Constant;
 import com.interest.auth.bean.ActivityBean;
 import com.interest.auth.bean.JoinActivityBean;
+import com.interest.auth.bean.UserFinanceBean;
 import com.interest.auth.dao.ActivityRepository;
 import com.interest.auth.dao.CourtRepository;
 import com.interest.auth.dao.UserRepository;
@@ -12,8 +13,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -36,6 +39,9 @@ public class ActivityService implements IActivityService
 
     @Autowired
     private CourtRepository courtRepository;
+
+    @Autowired
+    private IFinanceService financeService;
 
 
     @Override
@@ -180,5 +186,47 @@ public class ActivityService implements IActivityService
         }
         activity.setParticipates(participates);
         activityRepository.saveAndFlush(activity);
+    }
+
+    @Transactional
+    public void handleSettlement(Activity activity) throws HGException
+    {
+        // 活动标志为end
+        activity.setState(Constant.ACTIVITY_STATE.END.ordinal());
+
+        // 统计分摊费用，更新表格
+        activity.getParticipates();
+        Integer chargeTotal = activity.getChargeTotal();
+
+        Set<ActivityParticipate> participates = activity.getParticipates();
+        List<String> usernames = new ArrayList<String>(10);
+        float chargeAverage = 0.0f;
+        if (null != participates && participates.size() >= 1)
+        {
+            Integer userNums = 0;
+            for (ActivityParticipate participate : participates)
+            {
+                userNums = userNums + participate.getParticipateNumbers();
+                usernames.add(participate.getUsername());
+            }
+
+            chargeAverage = chargeTotal / userNums;
+            DecimalFormat df = new DecimalFormat(".00");
+            chargeAverage = Float.valueOf(df.format(chargeAverage));
+
+        }
+        //TODO 需要用到事务
+        //TODO 暂时无性能问题，先用遍历的方式，后期寻求使用拼接SQL
+        UserFinanceBean payload;
+        for (String username : usernames)
+        {
+            payload = new UserFinanceBean();
+            payload.setActivityID(activity.getId());
+            payload.setAmount(chargeAverage);
+            payload.setRemark("Settlement auto when activity is ended");
+            payload.setUsername(username);
+            financeService.userExpenditure(payload);
+        }
+        activityRepository.save(activity);
     }
 }

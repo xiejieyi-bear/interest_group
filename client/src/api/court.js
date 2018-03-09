@@ -63,7 +63,6 @@ export function JoinActivityAPI(data) {
   })
 }
 
-
 export function fetchActivityList(query) {
   return request({
     url: '/activity',

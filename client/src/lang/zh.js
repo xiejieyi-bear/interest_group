@@ -190,7 +190,8 @@ export default {
     participate_total: '参与人数',
     participate_users: '参加用户',
     remark: '备注',
-    activityState: '活动状态'
+    activityState: '活动状态',
+    settlement: '结算'
   },
 
   court_charge_table: {
