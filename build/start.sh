@@ -18,4 +18,4 @@ docker run -p 3306:3306 --name mymysql -v $PWD/data:/var/lib/mysql \
 docker run --name auth --net="host"  -d xiejieyi/auth
 docker run --name server --net="host"  -d xiejieyi/eureka_server
 docker run --name gateway --net="host"  -d xiejieyi/gateway
-docker run --name mynginx --net="host"  -v /home/hobby_user/nginx:/etc/nginx/:ro -d xiejieyi/nginx
+# docker run --name mynginx --net="host"  -v /home/hobby_user/nginx:/etc/nginx/:ro -d xiejieyi/nginx

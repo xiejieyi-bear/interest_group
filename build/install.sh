@@ -41,5 +41,5 @@ usermod -aG docker hobby_user
 cp -rf ./nginx /home/hobby_user/
 mkdir /home/hobby_user/mysql
 mkdir -p /home/hobby_user/mysql/logs /home/hobby_user/mysql/data
-cp -rf ./build/start.sh /home/hobby_user/start.sh
+cp -rf ./bin/start.sh /home/hobby_user/start.sh
 
