@@ -8,7 +8,9 @@ cd ..
 rm -rf release
 mkdir -p release
 
+
 cd build
+chmod +x *.sh
 ./package_client.sh
 ./package_nginx_image.sh
 ./package_server.sh
