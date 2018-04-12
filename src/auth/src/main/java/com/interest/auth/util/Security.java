@@ -8,6 +8,8 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.List;
 
 /*
  * PBKDF2 salted password hashing.
@@ -151,12 +153,29 @@ public class Security
     {
         try
         {
-            String plain = "admin123";
-            String salt = Security.generateSalt();
+            String a= "abc";
+            String b = "abc";
+            String c= "a";
+            String d="bc";
+            String e=c+d;
+            System.out.println(a==b);
+            System.out.println(a==e);
 
-            String encrypt = Security.encrypt(plain, salt);
-            System.out.println("encrypt=" + encrypt+",salt="+salt);
-            System.out.println("result =" + Security.validatePassword(plain,salt,encrypt));
+            String name="\uD835\udd46";
+            System.out.println(name);
+            System.out.println(name.length());
+            System.out.println(name.codePointCount(0,2));
+
+            int k=3;
+            int[] result = new int[k];
+            System.out.println(result);
+            List<String> names = Arrays.asList("Amy","Bob","Carl");
+            // String plain = "admin123";
+            // String salt = Security.generateSalt();
+            //
+            // String encrypt = Security.encrypt(plain, salt);
+            // System.out.println("encrypt=" + encrypt+",salt="+salt);
+            // System.out.println("result =" + Security.validatePassword(plain,salt,encrypt));
         }
         catch(Exception ex)
         {
