@@ -79,22 +79,24 @@ public class Activity
                 ", remark='" + remark + '\'' +
                 '}';
 
+        StringBuffer buffer  = new StringBuffer();
+        buffer.append(result);
         if (participates != null) {
             for(ActivityParticipate book : participates) {
-                result += String.format(
+                buffer.append(String.format(
                         "participate[id=%d, username='%s']%n",
-                        book.getId(), book.getUsername());
+                        book.getId(), book.getUsername()));
             }
         }
         if(courts != null){
             for(ActivityCourt court:courts){
-                result += String.format(
+                buffer.append(String.format(
                         "court[id=%d, username='%s']%n",
-                        court.getId(), court.getCourtName());
+                        court.getId(), court.getCourtName()));
 
             }
         }
-        return result;
+        return buffer.toString();
     }
 
     public String getRemark()
